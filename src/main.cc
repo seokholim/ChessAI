@@ -9,6 +9,10 @@ int main () {
 
     ChessGame g;
 
+    g.init();
+
+    
+
 
 
     return 0;

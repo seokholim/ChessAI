@@ -7,6 +7,7 @@
 class Player {
     std::string name;
   public:  
+    Player();
     Player(std::string name);
     std::string get_name();
     

@@ -2,6 +2,8 @@
 #include <string>
 #include "chess_game.h"
 
+ChessGame::ChessGame() {}
+
 void ChessGame::init() {
     std::cout << "initializing" << std::endl;
     
@@ -16,7 +18,4 @@ void ChessGame::init() {
 
     std::cout << "setting up board" << std::endl;
     this->b = Board();
-
-
-    
 }

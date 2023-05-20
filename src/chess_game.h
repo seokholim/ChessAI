@@ -9,6 +9,7 @@ class ChessGame {
     Board b;
 
   public:
+    ChessGame();
     void init(); // asks humnan vs human, then players' names, then sets up board
     
     

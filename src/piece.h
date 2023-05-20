@@ -10,6 +10,7 @@ class Piece : public Subject, public Observer {
     std::vector<Position> moves;
 
   public:
+    virtual char print();
     virtual Position get_position();
     virtual Position get_move(); 
 };
