@@ -49,6 +49,12 @@ void ChessGame::play() {
             Position current_position = convert_to_position(current_column, current_row);
             std::cout << this->board.get_piece_type_string_at(current_position) << " selected" << std::endl;
             
+            std::vector<Move*> possible_moves = this->board.get_piece_at(current_position)->get_moves();
+            std::cout << "You have the following moves:";
+            for (int i = 0; i < possible_moves.size(); ++i) {
+                std::cout << " " << possible_moves[i]->get_next();
+            }
+            std::cout << std::endl;
         }
     }
 

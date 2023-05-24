@@ -13,6 +13,11 @@ Board::Board() {
     }
 }
 
+Piece* Board::get_piece_at(Position pos) {
+
+}
+
+
 std::string Board::get_piece_type_string_at(Position pos) {
 
 }

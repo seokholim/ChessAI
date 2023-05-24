@@ -7,10 +7,10 @@ class Move {
     int turn;
     Position prev;
     Position next;
-    Piece *p;
+    Piece* p;
   public:
-    Move(int turn, Position prev, Position next, Piece *p);
-    
+    Move(int turn, Position prev, Position next, Piece* p);
+    Position get_next();
 };
 
 #endif

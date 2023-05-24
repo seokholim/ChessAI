@@ -9,15 +9,15 @@
 class Piece : public Subject, public Observer {
   protected:
     PieceType pieceType;
-    Player *owner;
+    Player* owner;
     Position p;
     std::vector<Move*> moves;
 
   public:
     PieceType get_piece_type();
-    virtual char print();
-    virtual Position get_position();
-    virtual Position get_move();
+    Position get_position();    
+    std::vector<Move*> get_moves();
+    char print();
 };
 
 #endif

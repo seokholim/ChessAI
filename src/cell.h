@@ -6,7 +6,7 @@
 class Cell {
     int row;
     char column;
-    Piece *p;
+    Piece* p;
 
   public:
     Cell(int r, char c);
