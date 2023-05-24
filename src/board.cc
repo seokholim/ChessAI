@@ -13,6 +13,10 @@ Board::Board() {
     }
 }
 
+std::string Board::get_piece_type_string_at(Position pos) {
+
+}
+
 PieceType Board::get_piece_type_at(Position pos) {
     // convert Position to row/col
     std::pair colrow = convert_to_column_row(pos);

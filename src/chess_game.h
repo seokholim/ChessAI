@@ -1,6 +1,5 @@
 #ifndef CHESS_GAME_H
 #define CHESS_GAME_H
-
 #include "player.h"
 #include "board.h"
 

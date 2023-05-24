@@ -47,9 +47,8 @@ void ChessGame::play() {
             int current_row = current_pos[1] - '0'; // TO DO: check input
 
             Position current_position = convert_to_position(current_column, current_row);
-            std::cout << this->board.get_piece_type_at(current_position) << " selected" << std::endl;
+            std::cout << this->board.get_piece_type_string_at(current_position) << " selected" << std::endl;
             
-
         }
     }
 
