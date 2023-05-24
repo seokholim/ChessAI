@@ -4,11 +4,10 @@
 #include "observer.h"
 
 class Subject {
-  
   public:
-    void notifyObservers();
-    void attachObserver(Observer *);
-    void detachObserver(Observer *);
+    virtual void attach(Observer *);
+    virtual void detach(Observer *);
+    virtual void notify();
 };
 
 #endif

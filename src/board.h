@@ -8,7 +8,9 @@ class Board {
 
   public:
     Board();
-    void set_pieces();
+    std::string get_piece_type_at(Position pos);
+    PieceType get_piece_type_at(Position pos);
+    void set_piece(Piece *p);
     void print();
 };
 

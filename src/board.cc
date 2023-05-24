@@ -1,6 +1,7 @@
 #include "board.h"
 #include <vector>
 #include <iostream>
+#include "info.h"
 
 Board::Board() {
     std::vector<Cell> r;
@@ -12,9 +13,16 @@ Board::Board() {
     }
 }
 
-void Board::set_pieces() {
+PieceType Board::get_piece_type_at(Position pos) {
+    // convert Position to row/col
+    std::pair colrow = convert_to_column_row(pos);
+    return this->grid[colrow.second][colrow.first - 'a'].get_piece_type();
+}
+
+void Board::set_piece(Piece *p) {
 
 }
+
 
 void Board::print() {
     std::cout << "--------" << std::endl;

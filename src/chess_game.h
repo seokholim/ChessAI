@@ -6,12 +6,15 @@
 
 class ChessGame {
     Player black_player, white_player;
-    Board b;
+    Board board;
+    int turn_number;
 
   public:
     ChessGame();
+    void initialize_pieces();
     void init(); // asks humnan vs human, then players' names, then sets up board
-    
+    void play();
+    int get_turn();
     
 };
 

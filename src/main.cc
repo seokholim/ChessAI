@@ -11,9 +11,7 @@ int main () {
 
     g.init();
 
-    
-
-
+    g.play();
 
     return 0;
 }
