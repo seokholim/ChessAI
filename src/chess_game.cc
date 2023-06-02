@@ -28,10 +28,14 @@ void ChessGame::initialize_pieces() {
 
 void ChessGame::play() {
     std::cout << "Game started!" << std::endl;
-    this->turn_number += 1;
+
+    if (this->turn_number != 0) {
+        std::cout << "TURN NUMBER NOT ZERO WHEN GAME STARTING" << std::endl;
+    }
 
     std::string cmd;
     while (true) {
+        this->turn_number += 1;
         if (turn_number % 2 == 1) { // white player's turn
             std::cout << this->white_player.get_name() << "'s turn!" << std::endl;
         } else {
@@ -52,9 +56,12 @@ void ChessGame::play() {
             std::vector<Move*> possible_moves = this->board.get_piece_at(current_position)->get_moves();
             std::cout << "You have the following moves:";
             for (int i = 0; i < possible_moves.size(); ++i) {
-                std::cout << " " << possible_moves[i]->get_next();
+                std::pair<int, char> res = convert_to_column_row(possible_moves[i]->get_move_to());
+                std::cout << res.second << res.first;
             }
             std::cout << std::endl;
+
+            break;
         }
     }
 
