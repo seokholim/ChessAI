@@ -4,13 +4,12 @@
 #include "piece.h"
 
 class Move {
-    int turn;
-    Position prev;
-    Position next;
-    Piece* p;
+    Position move_from;
+    Position move_to;
+    Piece* move_piece;
   public:
-    Move(int turn, Position prev, Position next, Piece* p);
-    Position get_next();
+    Move(Position move_from, Position move_to, Piece* p);
+    Position get_move_to();
 };
 
 #endif
