@@ -1,15 +1,22 @@
 #include "cell.h"
 
-Cell::Cell(int r, char c) {
-    this->row = r;
-    this->column = c;
+Cell::Cell(char column, int row) {
+    this->column = column;
+    this->row = row;
 }
 
+void Cell::set_piece(Piece* piece) {
+    this->piece = piece;
+}
 
-PieceType Cell::get_piece_type() {
-    return this->p->get_piece_type();
+Piece* Cell::get_piece() {
+    return this->piece;
+}
+
+bool Cell::empty() {
+    return this->piece == nullptr;
 }
 
 char Cell::print_piece() {
-    
+    return this->piece->print();
 }

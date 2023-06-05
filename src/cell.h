@@ -4,13 +4,15 @@
 #include "info.h"
 
 class Cell {
-    int row;
     char column;
-    Piece* p;
+    int row;
+    Piece* piece;
 
   public:
-    Cell(int r, char c);
-    PieceType get_piece_type();
+    Cell(char column, int row);
+    void set_piece(Piece* piece);
+    Piece* get_piece();
+    bool empty();
     char print_piece();
 };
 
