@@ -19,19 +19,8 @@ Piece* Board::get_piece_at(Position pos) {
     return this->grid[pos.row - 1][pos.column - 'a'].get_piece();
 }
 
-
-std::string Board::get_piece_type_string_at(Position pos) {
-
-}
-
-// PieceType Board::get_piece_type_at(Position pos) {
-//     // convert Position to row/col
-//     std::pair colrow = convert_to_column_row(pos);
-//     return this->grid[colrow.second][colrow.first - 'a'].get_piece_type();
-// }
-
 void Board::set_piece_at(Piece *p, Position pos) {
-
+    this->grid[pos.row - 1][pos.column - 'a'].set_piece(p);
 }
 
 bool Board::empty_at(Position pos) {
