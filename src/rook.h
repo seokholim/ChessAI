@@ -5,7 +5,7 @@
 class Rook : Piece {
 
   public:
-    void update();
+    void update() override;
 };
 
 #endif

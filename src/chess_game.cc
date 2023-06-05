@@ -4,9 +4,7 @@
 
 ChessGame::ChessGame() : turn_number{0} {}
 
-void ChessGame::init() {
-    std::cout << "initializing" << std::endl;
-    
+void ChessGame::initialize_players() {    
     std::string white_player_name, black_player_name;
     std::cout << "White player's name: " << std::endl;
     std::getline(std::cin, white_player_name);
@@ -15,18 +13,17 @@ void ChessGame::init() {
     std::cout << "Black player's name: " << std::endl;
     std::getline(std::cin, black_player_name);
     this->black_player = Player(black_player_name, PlayerColour::Black);
+}
 
+void ChessGame::initialize_board() {
     std::cout << "Setting up board" << std::endl;
-    this->board = Board(); // empty board
-    initialize_pieces();
-    this->board.print();
+    this->board = Board();
+
+
+
 }
 
-void ChessGame::initialize_pieces() {
-    
-}
-
-void ChessGame::play() {
+void ChessGame::start() {
     std::cout << "Game started!" << std::endl;
 
     if (this->turn_number != 0) {
@@ -48,16 +45,18 @@ void ChessGame::play() {
             std::cin >> current_pos;
 
             char current_column = current_pos[0];
-            int current_row = current_pos[1] - '0'; // TO DO: check input
+            int current_row = current_pos[1] - '0';
 
-            Position current_position = convert_to_position(current_column, current_row);
+            // TODO: check current_pos is valid
+
+            Position current_position {current_column, current_row};
             std::cout << this->board.get_piece_type_string_at(current_position) << " selected" << std::endl;
             
             std::vector<Move*> possible_moves = this->board.get_piece_at(current_position)->get_moves();
             std::cout << "You have the following moves:";
             for (int i = 0; i < possible_moves.size(); ++i) {
-                std::pair<int, char> res = convert_to_column_row(possible_moves[i]->get_move_to());
-                std::cout << res.second << res.first;
+                Position res = possible_moves[i]->get_move_to();
+                std::cout << res.column << res.row;
             }
             std::cout << std::endl;
 

@@ -1,10 +1,10 @@
 #include "info.h"
 #include <utility>
 
-std::pair<int, char> convert_to_column_row(Position pos) {
+Position::Position(char column, int row) : column{column}, row{row} {}
 
-}
-
-Position convert_to_position(char col, int row) {
-
+char convert_to_char(PieceType piece_type) {
+    switch(piece_type) {
+        
+    }
 }

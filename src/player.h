@@ -14,6 +14,7 @@ class Player {
     Player();
     Player(std::string name, PlayerColour player_colour);
     std::string get_name();
+    PlayerColour get_player_colour();
     
 };
 

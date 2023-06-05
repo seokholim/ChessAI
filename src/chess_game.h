@@ -10,11 +10,12 @@ class ChessGame {
 
   public:
     ChessGame();
-    void initialize_pieces();
-    void init(); // asks humnan vs human, then players' names, then sets up board
-    void play();
+    void initialize_board();
+    void initialize_players(); // TODO: asks human vs human, then players' names, then sets up board
+    void start();
     int get_turn();
-    
+    void print_board();
+
 };
 
 #endif

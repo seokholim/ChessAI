@@ -8,9 +8,10 @@
 
 class Piece : public Subject, public Observer {
   protected:
-    PieceType pieceType;
+    PieceType piece_type;
     Player* owner;
-    Position p;
+    Position position;
+    Board* board;
     std::vector<Move*> moves;
 
   public:

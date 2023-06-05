@@ -16,8 +16,7 @@ Board::Board() : grid(8) {
 }
 
 Piece* Board::get_piece_at(Position pos) {
-    std::pair colrow = convert_to_column_row(pos);
-    return this->grid[colrow.second - 1][colrow.first - 'a'].get_piece();
+    return this->grid[pos.row - 1][pos.column - 'a'].get_piece();
 }
 
 
@@ -36,8 +35,7 @@ void Board::set_piece_at(Piece *p, Position pos) {
 }
 
 bool Board::empty_at(Position pos) {
-    std::pair<int, char> colrow = convert_to_column_row(pos);
-    return this->grid[colrow.second - 1][colrow.first - 'a'].empty();
+    return this->grid[pos.row - 1][pos.column - 'a'].empty();
 }
 
 

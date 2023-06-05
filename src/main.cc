@@ -9,9 +9,11 @@ int main () {
 
     ChessGame g;
 
-    g.init();
+    g.initialize_players();
 
-    g.play();
+    g.initialize_board();
+
+    g.start();
 
     return 0;
 }
