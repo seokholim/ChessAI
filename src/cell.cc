@@ -1,5 +1,7 @@
 #include "cell.h"
 
+Cell::Cell() {}
+
 Cell::Cell(char column, int row) {
     this->column = column;
     this->row = row;
@@ -17,6 +19,6 @@ bool Cell::empty() {
     return this->piece == nullptr;
 }
 
-char Cell::print_piece() {
+char Cell::print() {
     return this->piece->print();
 }

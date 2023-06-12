@@ -1,7 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
 #include "piece.h"
-#include "info.h"
 
 class Cell {
     char column;
@@ -9,11 +8,12 @@ class Cell {
     Piece* piece;
 
   public:
+    Cell();
     Cell(char column, int row);
     void set_piece(Piece* piece);
     Piece* get_piece();
     bool empty();
-    char print_piece();
+    char print();
 };
 
 #endif

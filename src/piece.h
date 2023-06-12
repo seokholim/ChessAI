@@ -6,15 +6,22 @@
 #include "move.h"
 #include "player.h"
 
+class Board;
+
+class Player;
+
 class Piece : public Subject, public Observer {
-  protected:
+protected:
     PieceType piece_type;
     Player* owner;
     Position position;
     Board* board;
     std::vector<Move*> moves;
 
-  public:
+public:
+    Piece(PieceType piece_type, Player* owner);
+    Piece(PieceType piece_type, Player* owner, Position position, Board* board);
+    ~Piece();
     PieceType get_piece_type();
     Position get_position();    
     std::vector<Move*> get_moves();

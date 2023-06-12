@@ -1,13 +1,15 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
-
 #include "observer.h"
+#include <vector>
 
 class Subject {
+  protected:
+    std::vector<Observer*> observers;
   public:
-    virtual void attach(Observer *);
-    virtual void detach(Observer *);
-    virtual void notify();
+    void attach(Observer* ob);
+    void detach(Observer* ob);
+    void notify();
 };
 
 #endif

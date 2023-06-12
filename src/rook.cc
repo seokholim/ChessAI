@@ -1,6 +1,10 @@
 #include "rook.h"
 
-void Rook::update() {
+Rook::Rook(Player* owner) : Piece{PieceType::Rook, owner} {}
+
+Rook::Rook(Player* owner, Position position, Board* board) : Piece{PieceType::Rook, owner, position, board} {}
+
+void Rook::update(Subject &by) {
     this->moves.clear();
 
     // check Forward, Backward, Right, Left
