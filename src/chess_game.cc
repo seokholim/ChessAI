@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include "chess_game.h"
+#include "rook.h"
+
 
 ChessGame::ChessGame() : turn_number{0} {}
 
@@ -19,21 +21,21 @@ void ChessGame::initialize_board() {
     std::cout << "Setting up board" << std::endl;
     this->board = Board();
 
+    std::cout << "Creating pieces" << std::endl;
+    Rook* r1 = new Rook {&(this->white_player)};
+    this->board.set_piece_at(r1, {'a', 1});
 
-
+    Rook* r2 = new Rook {&(this->black_player)};
+    this->board.set_piece_at(r2, {'h', 8});
 }
 
 void ChessGame::start() {
     std::cout << "Game started!" << std::endl;
 
-    if (this->turn_number != 0) {
-        std::cout << "TURN NUMBER NOT ZERO WHEN GAME STARTING" << std::endl;
-    }
-
     std::string cmd;
     while (true) {
         this->turn_number += 1;
-        if (turn_number % 2 == 1) { // white player's turn
+        if (white_player_turn()) {
             std::cout << this->white_player.get_name() << "'s turn!" << std::endl;
         } else {
             std::cout << this->black_player.get_name() << "'s turn!" << std::endl;
@@ -50,17 +52,22 @@ void ChessGame::start() {
             // TODO: check current_pos is valid
 
             Position current_position {current_column, current_row};
-            std::cout << this->board.get_piece_type_string_at(current_position) << " selected" << std::endl;
-            
-            std::vector<Move*> possible_moves = this->board.get_piece_at(current_position)->get_moves();
-            std::cout << "You have the following moves:";
-            for (int i = 0; i < possible_moves.size(); ++i) {
-                Position res = possible_moves[i]->get_move_to();
-                std::cout << res.column << res.row;
-            }
-            std::cout << std::endl;
 
-            break;
+            Piece* selected_piece = this->board.get_piece_at(current_position);
+            if (selected_piece != nullptr) {
+                std::cout << selected_piece->print() << " selected" << std::endl;
+                std::vector<Move*> possible_moves = selected_piece->get_moves();
+                std::cout << "You have the following moves:";
+                for (int i = 0; i < possible_moves.size(); ++i) {
+                    Position res = possible_moves[i]->get_move_to();
+                    std::cout << res.column << res.row << ' ';
+                }
+                std::cout << std::endl;
+            } else {
+                std::cout << "no piece found in that position!" << std::endl;
+            }
+            
+            break; // testing turn 1
         }
     }
 
@@ -68,4 +75,12 @@ void ChessGame::start() {
 
 int ChessGame::get_turn() {
     return this->turn_number;
+}
+
+bool ChessGame::white_player_turn() {
+    return (this->turn_number % 2) == 1; 
+}
+
+bool ChessGame::black_player_turn() {
+    return (this->turn_number % 2) == 0; 
 }
