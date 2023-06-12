@@ -1,7 +1,8 @@
 #ifndef MOVE_H
 #define MOVE_H
 #include "info.h"
-#include "piece.h"
+
+class Piece;
 
 class Move {
     Position move_from;
