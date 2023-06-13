@@ -2,16 +2,17 @@
 #define CHESS_GAME_H
 #include "player.h"
 #include "board.h"
+#include "rook.h"
 
 class ChessGame {
-    Player black_player, white_player;
-    Board board;
+    Player white_player, black_player; // always there til game ends
+    Board board; // always there til game ends
     int turn_number;
 
   public:
     ChessGame();
     void set_piece_at(Piece* piece, Position pos);
-    void initialize_board();
+    void initialize_pieces();
     void initialize_players(); // TODO: asks human vs human, then players' names, then sets up board
     void start();
     int get_turn();
