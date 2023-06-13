@@ -4,14 +4,12 @@
 using namespace std;
 
 int main () {
-
-    // human vs human, human vs basic computer
-
+    
     ChessGame g;
 
     g.initialize_players();
 
-    g.initialize_board();
+    g.initialize_pieces();
 
     g.start();
 
