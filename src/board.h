@@ -11,6 +11,7 @@ class Board {
     Board();
     void set_piece_at(Piece* piece, Position pos);
     Piece* get_piece_at(Position pos);
+    std::vector<Piece*> get_pieces();
     bool empty_at(Position pos);
     void print();
 };
