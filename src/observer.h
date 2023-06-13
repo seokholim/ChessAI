@@ -5,7 +5,7 @@ class Subject;
 
 class Observer {
   public:
-    virtual void update(Subject &by) = 0;
+    virtual void update() = 0;
 };
 
 #endif
