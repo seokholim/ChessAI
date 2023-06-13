@@ -13,7 +13,7 @@ class Cell {
     void set_piece(Piece* piece);
     Piece* get_piece();
     bool empty();
-    char print();
+    void print();
 };
 
 #endif
