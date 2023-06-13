@@ -23,6 +23,8 @@ char convert_to_char(PieceType piece_type) {
             return 'R';
         case PieceType::Pawn:
             return 'o';
+        default:
+            return ' ';
     }
 }
 
