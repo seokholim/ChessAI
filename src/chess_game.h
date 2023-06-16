@@ -2,7 +2,12 @@
 #define CHESS_GAME_H
 #include "player.h"
 #include "board.h"
+#include "knight.h"
 #include "rook.h"
+#include "bishop.h"
+#include "king.h"
+#include "queen.h"
+#include "pawn.h"
 
 class ChessGame {
     Player white_player, black_player; // always there til game ends
@@ -11,10 +16,11 @@ class ChessGame {
 
   public:
     ChessGame();
-    void set_piece_at(Piece* piece, Position pos);
+    void create_piece_at(Piece* piece, Position pos);
     void initialize_pieces();
+    void move_piece(Position current_pos, Position new_pos);
     void initialize_players(); // TODO: asks human vs human, then players' names, then sets up board
-    void start();
+    void run();
     int get_turn();
     bool white_player_turn();
     bool black_player_turn();
