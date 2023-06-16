@@ -46,7 +46,7 @@ void ChessGame::initialize_pieces() {
     Queen* white_queen = new Queen {PlayerColour::White};
     King* white_king = new King {PlayerColour::White};
 
-    Pawn* white_pawn_1 = new Pawn {PlayerColour::White};
+    Pawn* white_pawn_1 = new Pawn {PlayerColour::White}; // TODO: use smart pointers
     Pawn* white_pawn_2 = new Pawn {PlayerColour::White};
     Pawn* white_pawn_3 = new Pawn {PlayerColour::White};
     Pawn* white_pawn_4 = new Pawn {PlayerColour::White};
@@ -112,7 +112,9 @@ void ChessGame::initialize_pieces() {
 }
 
 void ChessGame::move_piece(Position current_pos, Position new_pos) { // after checking ownership and nullity of piece. should they be checked here too?
-    
+    board.move_piece(current_pos, new_pos);
+    board.get_piece_at(new_pos)->notify();
+    board.get_piece_at(new_pos)->calculate_moves();
 }
 
 void ChessGame::run() {
@@ -129,7 +131,7 @@ void ChessGame::run() {
             } else {
                 std::cout << this->black_player.get_name() << "'s turn!" << std::endl;
             }
-            print_board();
+            print_board(white_player_turn());
         } else {
             std::cout << "please try again" << std::endl;
         }
@@ -145,6 +147,12 @@ void ChessGame::run() {
             // TODO: check current_pos is valid
             Position current_position {current_column, current_row};
 
+            if (board.get_piece_at(current_position) == nullptr) {
+                std::cout << "Can't move; no piece was selected!" << std::endl;
+                turn_success = false;
+                continue;
+            }
+
             if (white_player_turn() && board.get_piece_at(current_position)->white()) {
                 Piece* selected_piece = this->board.get_piece_at(current_position);
                 if (selected_piece != nullptr) {
@@ -157,10 +165,23 @@ void ChessGame::run() {
                         std::cout << res.column << res.row << ' ';
                     }
                     std::cout << std::endl;
+
+                    std::string new_pos;
+                    std::cin >> new_pos;
+                    char new_column = new_pos[0];
+                    int new_row = new_pos[1] - '0';
+                    Position new_position {new_column, new_row};
+                    if (this->board.empty_at(new_position)) {
+                        move_piece(current_position, new_position);
+                        turn_success = true;
+                    } else {
+                        std::cout << "Can't move; the desired position is not empty!" << std::endl;
+                        turn_success = false;
+                    }
                 } else {
                     std::cout << "no piece found in that position!" << std::endl;
+                    turn_success = false;
                 }
-                turn_success = true;
             } else if (black_player_turn() && board.get_piece_at(current_position)->black()) {
                 Piece* selected_piece = this->board.get_piece_at(current_position);
                 if (selected_piece != nullptr) {
@@ -173,6 +194,19 @@ void ChessGame::run() {
                         std::cout << res.column << res.row << ' ';
                     }
                     std::cout << std::endl;
+
+                    std::string new_pos;
+                    std::cin >> new_pos;
+                    char new_column = new_pos[0];
+                    int new_row = new_pos[1] - '0';
+                    Position new_position {new_column, new_row};
+                    if (this->board.empty_at(new_position)) {
+                        move_piece(current_position, new_position);
+                        turn_success = true;
+                    } else {
+                        std::cout << "Can't move; the desired position is not empty!" << std::endl;
+                        turn_success = false;
+                    }
                 } else {
                     std::cout << "no piece found in that position!" << std::endl;
                     turn_success = false;
@@ -202,6 +236,6 @@ bool ChessGame::black_player_turn() {
     return (this->turn_number % 2) == 0; 
 }
 
-void ChessGame::print_board() {
-    this->board.print();
+void ChessGame::print_board(bool white_perspective) {
+    this->board.print(white_perspective);
 }

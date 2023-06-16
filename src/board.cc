@@ -13,10 +13,10 @@ Board::Board() : grid{8} {
         }
         grid[i] = row;
     }
-    print();
+    print(true);
 }
 
-void Board::set_piece_at(Piece* piece, Position new_pos) {
+void Board::create_piece_at(Piece* piece, Position new_pos) {
     if (valid_position(new_pos)) {
         if (piece != nullptr) {
             if (empty_at(new_pos)) {
@@ -24,13 +24,13 @@ void Board::set_piece_at(Piece* piece, Position new_pos) {
                 this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
                 this->pieces.push_back(piece);
             } else {
-                std::cout << "couldn't set the piece, requested position is not empty" << std::endl;
+                std::cout << "couldn't create the piece, requested position is not empty" << std::endl;
             }
         } else {
-            std::cout << "couldn't set the piece, piece is nullptr" << std::endl;
+            std::cout << "couldn't create the piece, piece is nullptr" << std::endl;
         }
     } else {
-        std::cout << "couldn't set the piece, requested position is out of range" << std::endl;
+        std::cout << "couldn't create the piece, requested position is out of range" << std::endl;
     }
 }
 
@@ -42,6 +42,14 @@ std::vector<Piece*> Board::get_pieces() {
     return this->pieces;
 }
 
+void Board::move_piece(Position current_pos, Position new_pos) {
+    if (valid_position(current_pos) && valid_position(new_pos)) {
+        Piece* moving_piece = this->grid[current_pos.row - 1][current_pos.column - 'a'].get_piece();
+        this->grid[current_pos.row - 1][current_pos.column - 'a'].remove_piece();
+        this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(moving_piece);
+    }
+}
+
 bool Board::empty_at(Position pos) {
     if (valid_position(pos)) {
         return this->grid[pos.row - 1][pos.column - 'a'].empty();
@@ -49,13 +57,30 @@ bool Board::empty_at(Position pos) {
     return false;
 }
 
-void Board::print() {
-    std::cout << "--------" << std::endl;
-    for (int i = 0; i < 8; ++i) { // row 8-1
-        for (int j = 0; j < 8; ++j) { // col a-h
-            grid[7 - i][j].print();
+void Board::print(bool white_perspective) {
+    if (white_perspective) {
+        std::cout << " --------" << std::endl;
+        for (int i = 0; i < 8; ++i) { // row 8-1
+            std::cout << 8 - i;
+            for (int j = 0; j < 8; ++j) { // col a-h
+                grid[7 - i][j].print();
+            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
+        std::cout << " --------" << std::endl;
+        std::cout << " abcdefgh" << std::endl;
+        std::cout << "=========" << std::endl;
+    } else {
+        std::cout << " --------" << std::endl;
+        for (int i = 0; i < 8; ++i) { // row 1-8
+            std::cout << i + 1;
+            for (int j = 0; j < 8; ++j) { // col h-a
+                grid[i][7 - j].print();
+            }
+            std::cout << std::endl;
+        }
+        std::cout << " --------" << std::endl;
+        std::cout << " hgfedcba" << std::endl;
+        std::cout << "=========" << std::endl;
     }
-    std::cout << "--------" << std::endl;
 }

@@ -24,7 +24,7 @@ class ChessGame {
     int get_turn();
     bool white_player_turn();
     bool black_player_turn();
-    void print_board();
+    void print_board(bool white_perspective);
 
 };
 
