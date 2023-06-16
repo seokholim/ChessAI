@@ -11,6 +11,7 @@ class Cell {
     Cell();
     Cell(char column, int row);
     void set_piece(Piece* piece);
+    void remove_piece();
     Piece* get_piece();
     bool empty();
     void print();

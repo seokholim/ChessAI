@@ -11,11 +11,14 @@ Cell::Cell(char column, int row) {
 
 void Cell::set_piece(Piece* piece) {
     if (piece != nullptr) {
-        this->piece = piece;
         Position new_pos {this->column, this->row};
         piece->set_position(new_pos);
-        std::cout << "piece was set new pos" << std::endl;
+        this->piece = piece;
     }
+}
+
+void Cell::remove_piece() {
+    this->piece = nullptr;
 }
 
 Piece* Cell::get_piece() {
