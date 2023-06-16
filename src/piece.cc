@@ -42,6 +42,14 @@ Position Piece::get_position() {
     return this->position;
 } 
 
+bool Piece::white() {
+    return this->player_colour == PlayerColour::White;
+}
+
+bool Piece::black() {
+    return this->player_colour == PlayerColour::Black;
+}
+
 void Piece::set_board(Board* board) {
     this->board = board;
 }
@@ -55,7 +63,7 @@ bool Piece::in_range(Piece* other_piece) {
 }
 
 void Piece::print() {
-    std::cout<< convert_to_char(this->piece_type);
+    std::cout<< convert_to_char(this->player_colour, this->piece_type);
 }
 
 Piece::~Piece() {}

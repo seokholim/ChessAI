@@ -23,12 +23,19 @@ public:
     Piece(PieceType piece_type, Player* owner);
     Piece(PieceType piece_type, Player* owner, Position position, Board* board);
     ~Piece();
+
     PieceType get_piece_type();
+    
     void set_position(Position new_pos);
     Position get_position();
+
+    bool white();
+    bool black();
+
     void set_board(Board* board);
     virtual void calculate_moves() = 0;
     std::vector<Move*> get_moves();
+
     bool in_range(Piece* other_piece);
     void print();
 };
