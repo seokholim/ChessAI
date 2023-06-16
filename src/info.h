@@ -1,5 +1,6 @@
 #ifndef INFO_H
 #define INFO_H
+#include <string>
 
 enum class PlayerColour {
     White, Black
@@ -13,7 +14,7 @@ enum class PieceType {
 
 bool valid_piece_type(PieceType piece_type);
 
-char convert_to_char(PieceType piece_type);
+std::string convert_to_char(PlayerColour player_colour, PieceType piece_type);
 
 struct Position {
     char column;
