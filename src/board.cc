@@ -17,21 +17,33 @@ Board::Board() : grid{8} {
 }
 
 void Board::create_piece_at(Piece* piece, Position new_pos) {
-    if (valid_position(new_pos)) {
-        if (piece != nullptr) {
-            if (empty_at(new_pos)) {
-                piece->set_board(this);
-                this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
-                this->pieces.push_back(piece);
-            } else {
-                std::cout << "couldn't create the piece, requested position is not empty" << std::endl;
-            }
-        } else {
-            std::cout << "couldn't create the piece, piece is nullptr" << std::endl;
-        }
+    if (piece == nullptr) {
+        std::cout << "Board::create_piece_at failed; piece is nullptr" << std::endl;
+    } else if (!valid_position(new_pos)) {
+        std::cout << "Board::create_piece_at failed; new_pos is not valid" << std::endl;
+    } else if (!empty_at(new_pos)) {
+        std::cout << "Board::create_piece_at failed; new_pos is not empty" << std::endl;
     } else {
-        std::cout << "couldn't create the piece, requested position is out of range" << std::endl;
+        piece->set_board(this);
+        this->pieces.push_back(piece);
+        this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
     }
+
+    // if (valid_position(new_pos)) { // TODO: ordering checks
+    //     if (piece != nullptr) {
+    //         if (empty_at(new_pos)) {
+    //             piece->set_board(this);
+    //             this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
+    //             this->pieces.push_back(piece);
+    //         } else {
+    //             std::cout << "couldn't create the piece, requested position is not empty" << std::endl;
+    //         }
+    //     } else {
+    //         std::cout << "couldn't create the piece, piece is nullptr" << std::endl;
+    //     }
+    // } else {
+    //     std::cout << "couldn't create the piece, requested position is out of range" << std::endl;
+    // }
 }
 
 Piece* Board::get_piece_at(Position pos) {
@@ -67,7 +79,6 @@ void Board::print(bool white_perspective) {
             }
             std::cout << std::endl;
         }
-        std::cout << " --------" << std::endl;
         std::cout << " abcdefgh" << std::endl;
         std::cout << "=========" << std::endl;
     } else {
@@ -79,7 +90,6 @@ void Board::print(bool white_perspective) {
             }
             std::cout << std::endl;
         }
-        std::cout << " --------" << std::endl;
         std::cout << " hgfedcba" << std::endl;
         std::cout << "=========" << std::endl;
     }
