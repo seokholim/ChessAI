@@ -3,73 +3,149 @@
 
 Rook::Rook(PlayerColour player_colour) : Piece{PieceType::Rook, player_colour} {}
 
+void Rook::evaluate_move(Position move_to) {
+
+}
+
 void Rook::calculate_moves() {
     this->moves.clear(); // TODO: improve by not always clearing out moves
 
-    if (this->player_colour == PlayerColour::White) {
+    if (white()) {
         // Forward
-        Position current_position = this->get_position();
-        current_position.row += 1;
-        while (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-            current_position.row += 1;
+        Position considered_pos = position;
+        considered_pos.row += 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.row += 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
 
         // Backward
-        current_position = this->position;
-        current_position.row -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        considered_pos = this->position;
+        considered_pos.row -= 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.row -= 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
         
         // Right
-        current_position = this->position;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        considered_pos = this->position;
+        considered_pos.column += 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.column += 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
 
         // Left
-        current_position = this->position;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        considered_pos = this->position;
+        considered_pos.column -= 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.column -= 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
+
     } else {
         // Forward
-        Position current_position = this->position;
-        current_position.row -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        Position considered_pos = this->position;
+        considered_pos.row -= 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.row -= 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
 
         // Backward
-        current_position = this->position;
-        current_position.row += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        considered_pos = this->position;
+        considered_pos.row += 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.row += 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
         
         // Right
-        current_position = this->position;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        considered_pos = this->position;
+        considered_pos.column -= 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.column -= 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
 
         // Left
-        current_position = this->position;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
+        considered_pos = this->position;
+        considered_pos.column += 1;
+        while (valid_position(considered_pos)) {
+            if (this->board->empty_on(considered_pos)) { // empty
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                considered_pos.column += 1;
+            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+                Move* new_move = new Move{this->position, considered_pos, this};
+                this->moves.push_back(new_move);
+                break;
+            } else { // same coloured piece
+                break;
+            }
         }
     }
 }
