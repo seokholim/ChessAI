@@ -16,38 +16,45 @@ Board::Board() : grid{8} {
     print(true);
 }
 
-void Board::create_piece_at(Piece* piece, Position new_pos) {
+void Board::create_piece_on(Piece* piece, Position new_pos) {
     if (piece == nullptr) {
-        std::cout << "Board::create_piece_at failed; piece is nullptr" << std::endl;
+        std::cout << "Board::create_piece_on failed; piece is nullptr" << std::endl;
     } else if (!valid_position(new_pos)) {
-        std::cout << "Board::create_piece_at failed; new_pos is not valid" << std::endl;
-    } else if (!empty_at(new_pos)) {
-        std::cout << "Board::create_piece_at failed; new_pos is not empty" << std::endl;
+        std::cout << "Board::create_piece_on failed; new_pos is not valid" << std::endl;
+    } else if (!empty_on(new_pos)) {
+        std::cout << "Board::create_piece_on failed; new_pos is not empty" << std::endl;
     } else {
         piece->set_board(this);
         this->pieces.push_back(piece);
         this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
     }
-
-    // if (valid_position(new_pos)) { // TODO: ordering checks
-    //     if (piece != nullptr) {
-    //         if (empty_at(new_pos)) {
-    //             piece->set_board(this);
-    //             this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
-    //             this->pieces.push_back(piece);
-    //         } else {
-    //             std::cout << "couldn't create the piece, requested position is not empty" << std::endl;
-    //         }
-    //     } else {
-    //         std::cout << "couldn't create the piece, piece is nullptr" << std::endl;
-    //     }
-    // } else {
-    //     std::cout << "couldn't create the piece, requested position is out of range" << std::endl;
-    // }
 }
 
-Piece* Board::get_piece_at(Position pos) {
-    return this->grid[pos.row - 1][pos.column - 'a'].get_piece();
+void Board::set_piece_on(Piece* piece, Position new_pos) { // TODO: check if piece is on board
+    if (piece == nullptr) {
+        std::cout << "Board::set_piece_on failed; piece is nullptr" << std::endl;
+    } else if (!valid_position(new_pos)) {
+        std::cout << "Board::set_piece_on failed; new_pos is not valid" << std::endl;
+    } else if (!empty_on(new_pos)) {
+        std::cout << "Board::set_piece_on failed; new_pos is not empty" << std::endl;
+    } else {
+        this->grid[new_pos.row - 1][new_pos.column - 'a'].set_piece(piece);
+    }
+}
+
+Piece* Board::get_piece_on(Position pos) {
+    if (valid_position(pos)) {
+        return this->grid[pos.row - 1][pos.column - 'a'].get_piece();
+    }
+    return nullptr;
+}
+
+void Board::remove_piece_on(Position pos) {
+    this->grid[pos.row - 1][pos.column - 'a'].remove_piece();
+}
+
+void Board::delete_piece_on(Position pos) {
+    this->grid[pos.row - 1][pos.column - 'a'].delete_piece();
 }
 
 std::vector<Piece*> Board::get_pieces() {
@@ -62,7 +69,7 @@ void Board::move_piece(Position current_pos, Position new_pos) {
     }
 }
 
-bool Board::empty_at(Position pos) {
+bool Board::empty_on(Position pos) {
     if (valid_position(pos)) {
         return this->grid[pos.row - 1][pos.column - 'a'].empty();
     }
