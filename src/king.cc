@@ -2,129 +2,92 @@
 
 King::King(PlayerColour player_colour) : Piece{PieceType::King, player_colour} {}
 
-void King::calculate_moves() {
-    this->moves.clear();
+void King::evaluate_move(Position move_to) {
+    if (board->empty_on(move_to)) {
+        Move* new_move = new Move{position, move_to, this};
+        moves.push_back(new_move);
+    } else if (this->player_colour != board->get_piece_on(move_to)->get_colour()) {
+        Move* new_move = new Move{position, move_to, this};
+        moves.push_back(new_move);
+    }
+}
 
-    if (this->player_colour == PlayerColour::White) { //{Direction::d, PlayerColour::c, i}?
+void King::calculate_moves() { // can create moves by evaluate_move(...)
+    moves.clear();
+
+    if (white()) { //{Direction::d, PlayerColour::c, i}?
         // Forward
-        Position current_position = this->position;
-        current_position.row += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        Position considered_pos = position;
+        considered_pos.row += 1;
+        evaluate_move(considered_pos);
         // Backward
-        current_position.row -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row -= 1;
+        evaluate_move(considered_pos);
         // Right
-        current_position = this->position;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.column += 1;
+        evaluate_move(considered_pos);
         // Left
-        current_position = this->position;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.column -= 1;
+        evaluate_move(considered_pos);
         // ForwardRight
-        current_position = this->position;
-        current_position.row += 1;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row += 1;
+        considered_pos.column += 1;
+        evaluate_move(considered_pos);
         // ForwardLeft
-        current_position = this->position;
-        current_position.row += 1;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row += 1;
+        considered_pos.column -= 1;
+        evaluate_move(considered_pos);
         // BackwardRight
-        current_position = this->position;
-        current_position.row -= 1;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row -= 1;
+        considered_pos.column += 1;
+        evaluate_move(considered_pos);
         // BackwardLeft
-        current_position = this->position;
-        current_position.row -= 1;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row -= 1;
+        considered_pos.column -= 1;
+        evaluate_move(considered_pos);
     } else {
         // Forward
-        Position current_position = this->position;
-        current_position.row -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        Position considered_pos = position;
+        considered_pos.row -= 1;
+        evaluate_move(considered_pos);
         // Backward
-        current_position.row += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos.row += 1;
+        evaluate_move(considered_pos);
         // Right
-        current_position = this->position;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.column -= 1;
+        evaluate_move(considered_pos);
         // Left
-        current_position = this->position;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.column += 1;
+        evaluate_move(considered_pos);
         // ForwardRight
-        current_position = this->position;
-        current_position.row -= 1;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row -= 1;
+        considered_pos.column -= 1;
+        evaluate_move(considered_pos);
         // ForwardLeft
-        current_position = this->position;
-        current_position.row -= 1;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row -= 1;
+        considered_pos.column += 1;
+        evaluate_move(considered_pos);
         // BackwardRight
-        current_position = this->position;
-        current_position.row += 1;
-        current_position.column -= 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row += 1;
+        considered_pos.column -= 1;
+        evaluate_move(considered_pos);
         // BackwardLeft
-        current_position = this->position;
-        current_position.row += 1;
-        current_position.column += 1;
-        if (this->board->empty_at(current_position)) {
-            Move* new_move = new Move{this->position, current_position, this};
-            this->moves.push_back(new_move);
-        }
+        considered_pos = position;
+        considered_pos.row += 1;
+        considered_pos.column += 1;
+        evaluate_move(considered_pos);
     }
 }
 
