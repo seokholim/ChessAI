@@ -162,7 +162,7 @@ void Queen::calculate_moves() {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 considered_pos.row -= 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -179,7 +179,7 @@ void Queen::calculate_moves() {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 considered_pos.row += 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -196,7 +196,7 @@ void Queen::calculate_moves() {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 considered_pos.column -= 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -213,7 +213,7 @@ void Queen::calculate_moves() {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 considered_pos.column += 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -232,7 +232,7 @@ void Queen::calculate_moves() {
                 this->moves.push_back(new_move);
                 considered_pos.row -= 1;
                 considered_pos.column -= 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -251,7 +251,7 @@ void Queen::calculate_moves() {
                 this->moves.push_back(new_move);
                 considered_pos.row -= 1;
                 considered_pos.column += 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -270,7 +270,7 @@ void Queen::calculate_moves() {
                 this->moves.push_back(new_move);
                 considered_pos.row += 1;
                 considered_pos.column -= 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
@@ -289,7 +289,7 @@ void Queen::calculate_moves() {
                 this->moves.push_back(new_move);
                 considered_pos.row += 1;
                 considered_pos.column += 1;
-            } else if (this->board->get_piece_on(considered_pos)->black()) { // capture
+            } else if (this->board->get_piece_on(considered_pos)->white()) { // capture
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
                 break;
