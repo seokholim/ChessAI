@@ -113,7 +113,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column -= 1;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -125,7 +125,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column -= 2;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -137,7 +137,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column -= 2;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -149,7 +149,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column -= 1;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -161,7 +161,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column += 1;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -173,7 +173,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column += 2;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -185,7 +185,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column += 2;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
@@ -197,7 +197,7 @@ void Knight::calculate_moves() { // TODO: can't move
         considered_pos.column += 1;
         if (valid_position(considered_pos)) {
             if (board->empty_on(considered_pos) 
-             || board->get_piece_on(considered_pos)->black()) {
+             || board->get_piece_on(considered_pos)->white()) {
                 Move* new_move = new Move{this->position, considered_pos, this};
                 this->moves.push_back(new_move);
             }
