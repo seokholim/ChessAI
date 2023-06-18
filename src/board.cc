@@ -16,7 +16,14 @@ Board::Board() : grid{8} {
     print(true);
 }
 
-void Board::create_piece_on(Piece* piece, Position new_pos) {
+Board::~Board() {
+    // for (auto piece : pieces) {
+    //     delete piece;
+    // }
+    // std::cout << "were all pieces deleted?" << std::endl;
+}
+
+void Board::create_piece_on(Piece* piece, const Position& new_pos) {
     if (piece == nullptr) {
         std::cout << "Board::create_piece_on failed; piece is nullptr" << std::endl;
     } else if (!valid_position(new_pos)) {
@@ -30,7 +37,7 @@ void Board::create_piece_on(Piece* piece, Position new_pos) {
     }
 }
 
-void Board::set_piece_on(Piece* piece, Position new_pos) { // TODO: check if piece is on board
+void Board::set_piece_on(Piece* piece, const Position& new_pos) { // TODO: check if piece is on board
     if (piece == nullptr) {
         std::cout << "Board::set_piece_on failed; piece is nullptr" << std::endl;
     } else if (!valid_position(new_pos)) {
@@ -42,18 +49,18 @@ void Board::set_piece_on(Piece* piece, Position new_pos) { // TODO: check if pie
     }
 }
 
-Piece* Board::get_piece_on(Position pos) {
+Piece* Board::get_piece_on(const Position& pos) {
     if (valid_position(pos)) {
         return this->grid[pos.row - 1][pos.column - 'a'].get_piece();
     }
     return nullptr;
 }
 
-void Board::remove_piece_on(Position pos) {
+void Board::remove_piece_on(const Position& pos) {
     this->grid[pos.row - 1][pos.column - 'a'].remove_piece();
 }
 
-void Board::delete_piece_on(Position pos) {
+void Board::delete_piece_on(const Position& pos) {
     this->grid[pos.row - 1][pos.column - 'a'].delete_piece();
 }
 
@@ -61,7 +68,7 @@ std::vector<Piece*> Board::get_pieces() {
     return this->pieces;
 }
 
-void Board::move_piece(Position current_pos, Position new_pos) {
+void Board::move_piece(const Position& current_pos, const Position& new_pos) {
     if (valid_position(current_pos) && valid_position(new_pos)) {
         Piece* moving_piece = this->grid[current_pos.row - 1][current_pos.column - 'a'].get_piece();
         this->grid[current_pos.row - 1][current_pos.column - 'a'].remove_piece();
@@ -69,7 +76,7 @@ void Board::move_piece(Position current_pos, Position new_pos) {
     }
 }
 
-bool Board::empty_on(Position pos) {
+bool Board::empty_on(const Position& pos) {
     if (valid_position(pos)) {
         return this->grid[pos.row - 1][pos.column - 'a'].empty();
     }
@@ -85,7 +92,7 @@ void Board::print(bool white_perspective) {
                 grid[7 - i][j].print();
             }
             std::cout << std::endl;
-        }
+            }
         std::cout << " abcdefgh" << std::endl;
         std::cout << "=========" << std::endl;
     } else {
