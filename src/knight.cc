@@ -6,7 +6,7 @@ void Knight::evaluate_move(Position new_pos) {
     
 }
 
-void Knight::calculate_moves() { // TODO: can't move
+void Knight::calculate_moves() {
     this->moves.clear();
 
     if (white()) {
