@@ -8,6 +8,7 @@ class Player;
 class Pawn : public Piece {
 private:
     bool first_move;
+    Position original_position;
 
 public:
     Pawn(PlayerColour player_colour);
