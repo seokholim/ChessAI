@@ -1,38 +1,29 @@
 #include "cell.h"
-#include <iostream>
 
-Cell::Cell() {}
+Cell::Cell() : column{}, row{}, piece{} {}
 
-Cell::Cell(char column, int row) {
-    this->column = column;
-    this->row = row;
-    this->piece = nullptr;
-}
+Cell::Cell(char column, int row) : column{column}, row{row}, piece{} {}
 
 void Cell::set_piece(Piece* piece) {
-    if (piece != nullptr) {
-        Position new_pos {this->column, this->row};
-        piece->set_position(new_pos);
+    if (piece == nullptr) {
+        std::cout << "Cell:set_piece; piece is nullptr!" << std::endl;
+    } else {
         this->piece = piece;
     }
 }
 
-void Cell::remove_piece() {
-    this->piece = nullptr;
+Piece* Cell::get_piece() {
+    return piece;
 }
 
-Piece* Cell::get_piece() {
-    return this->piece;
+void Cell::remove_piece() {
+    piece = nullptr;
+}
+
+void Cell::delete_piece() {
+
 }
 
 bool Cell::empty() {
-    return this->piece == nullptr;
-}
-
-void Cell::print() {
-    if (this->piece != nullptr) {
-        this->piece->print();
-    } else {
-        std::cout << ' ';
-    }
+    return piece == nullptr;
 }

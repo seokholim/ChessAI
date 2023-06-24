@@ -1,6 +1,9 @@
 #ifndef CELL_H
 #define CELL_H
-#include "piece.h"
+#include <iostream>
+#include "info.h"
+
+class Piece;
 
 class Cell {
     char column;
@@ -10,11 +13,14 @@ class Cell {
   public:
     Cell();
     Cell(char column, int row);
+
     void set_piece(Piece* piece);
-    void remove_piece();
     Piece* get_piece();
+    
+    void remove_piece();
+    void delete_piece();
+
     bool empty();
-    void print();
 };
 
 #endif
