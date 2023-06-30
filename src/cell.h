@@ -3,24 +3,24 @@
 #include <iostream>
 #include "info.h"
 
-class Piece;
+class ChessPiece;
 
 class Cell {
-    char column;
-    int row;
-    Piece* piece;
+    const char column;
+    const int row;
+    ChessPiece* piece;
 
-  public:
+public:
     Cell();
     Cell(char column, int row);
 
-    void set_piece(Piece* piece);
-    Piece* get_piece();
-    
+    ChessPiece* get_piece() const;
+    bool empty() const;
+
+    void set_piece(ChessPiece* piece);
     void remove_piece();
     void delete_piece();
 
-    bool empty();
 };
 
 #endif
