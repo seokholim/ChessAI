@@ -1,43 +1,57 @@
 #ifndef PIECE_H
 #define PIECE_H
+#include <iostream>
 #include <vector>
+#include <queue>
+#include "chess_board.h"
 #include "subject.h"
 #include "info.h"
-#include "move.h"
 
-class Board;
+class Move;
 
-class Player;
+class CompareMove;
 
 class Piece : public Subject, public Observer {
-protected:
-    PieceType piece_type;
-    PlayerColour player_colour;
-    Player* owner;
-    Position position;
-    Board* board;
-    std::vector<Move*> moves;
-
 public:
-    Piece(PieceType piece_type, PlayerColour player_colour);
-    Piece(PieceType piece_type, Player* owner);
-    Piece(PieceType piece_type, Player* owner, Position position, Board* board);
+    Piece(PieceType type, PlayerColour colour);
     ~Piece();
-
-    PieceType get_piece_type();
     
-    void set_position(Position new_pos);
-    Position get_position();
+    void starting_position(const Position& starting_position);
+    void position(const Position& position);
 
-    bool white();
-    bool black();
+    void set_board(ChessBoard* board);
+    bool has_board();
+    void print() const;
 
-    void set_board(Board* board);
-    virtual void calculate_moves() = 0;
-    std::vector<Move*> get_moves();
+    virtual void generate_candidate_positions() = 0;
+    void clear_candidate_positions();
+    void clear_moves();
 
-    bool in_range(Piece* other_piece);
-    void print();
+    // Piece can call 
+    PieceType type() const;
+
+    PlayerColour colour() const;
+    bool white() const;
+    bool black() const;
+
+    Position position() const;
+    bool in_range(const Piece* other_piece) const; // TODO
+
+    bool first_move() const;
+
+    std::priority_queue<Move*, std::vector<Move*>, CompareMove> moves() const;
+    Move* best_move() const;
+protected:
+    const PieceType type_;
+    const PlayerColour colour_;
+    Position starting_position_; // TODO: check if const works
+    Position position_;
+    ChessBoard* board_;
+
+    std::queue<Position> candidate_positions_;
+    std::priority_queue<Move*, std::vector<Move*>, CompareMove> moves_; // set by ChessEngine
+
+    std::vector<Move*> move_history_;
 };
 
 #endif

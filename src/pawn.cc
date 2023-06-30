@@ -1,127 +1,154 @@
 #include "pawn.h"
-#include <iostream>
 
-Pawn::Pawn(PlayerColour player_colour) : Piece{PieceType::Pawn, player_colour}, first_move{true} {}
+Pawn::Pawn(PlayerColour colour) : Piece{PieceType::Pawn, colour} {}
 
-void Pawn::calculate_moves() { // TODO: fix double forward
-    this->moves.clear(); // TODO: improve by not always clearing out moves
+bool Pawn::advanced_three_ranks() { // TODO: check history and calculate distance
+    if ((position_.column == starting_position_.column)
+    &&  ((white() && (position_.row - starting_position_.row == 3)) || (black() && (position_.row - starting_position_.row == -3)))) {
+        return true;
+    }
+    return false;
+}
+
+void Pawn::generate_candidate_positions() {
+    clear_candidate_positions();
+    clear_moves();
+
+    if (board_ == nullptr) {
+        std::cout << "Pawn::generate_candidate_positions(); this pawn is not on board!" << std::endl;
+        return;
+    }
 
     if (white()) {
         // Double Forward
-        if (first_move) {
-            Position considered_position = position;
-            considered_position.row += 2;
-            if (valid_position(considered_position)) {
-                if (this->board->empty_on(considered_position)) {
-                    Move* new_move = new Move{position, considered_position, this, nullptr};
-                    if (!chess_engine->king_checked(new_move)) {
-                        chess_engine->evaluate_move(new_move, 1);
-                        this->moves.push_back(new_move);
-                    }
+        if (first_move()) {
+            Position considered_position = position_;
+            considered_position.row += 1;
+            if (valid_position(considered_position) && board_->empty_on(considered_position)) {
+                considered_position.row += 1;
+                if (valid_position(considered_position) && board_->empty_on(considered_position)) {
+                    candidate_positions_.push(considered_position);
                 }
             }
         }
 
         // Forward
-        Position considered_position = position;
+        Position considered_position = position_;
         considered_position.row += 1;
         if (valid_position(considered_position)) {
-            if (this->board->empty_on(considered_position)) {
-                Move* new_move = new Move{position, considered_position, this, nullptr};
-                if (!chess_engine->king_checked(new_move)) {
-                    chess_engine->evaluate_move(new_move, 1);
-                    this->moves.push_back(new_move);
-                }
+            if (board_->empty_on(considered_position)) {
+                candidate_positions_.push(considered_position);
             }
         }
 
-        // Forward Right Capture
-        considered_position = position;
+        // Forward Right
+        considered_position = position_;
         considered_position.row += 1;
         considered_position.column += 1;
         if (valid_position(considered_position)) {
-            if (!this->board->empty_on(considered_position) && board->get_piece_on(considered_position)->black()) {
-                Move* new_move = new Move{position, considered_position, this, board->get_piece_on(considered_position)};
-                if (!chess_engine->king_checked(new_move)) {
-                    chess_engine->evaluate_move(new_move, 1);
-                    this->moves.push_back(new_move);
-                }
+            if (!board_->empty_on(considered_position)) {
+                candidate_positions_.push(considered_position);
             }
         }
 
-        // Forward Left Capture
-        considered_position = position;
+        // Forward Left
+        considered_position = position_;
         considered_position.row += 1;
         considered_position.column -= 1;
         if (valid_position(considered_position)) {
-            if (!this->board->empty_on(considered_position) && board->get_piece_on(considered_position)->black()) {
-                Move* new_move = new Move{position, considered_position, this, board->get_piece_on(considered_position)};
-                if (!chess_engine->king_checked(new_move)) {
-                    chess_engine->evaluate_move(new_move, 1);
-                    this->moves.push_back(new_move);
-                }
+            if (!board_->empty_on(considered_position)) {
+                candidate_positions_.push(considered_position);
+            }
+        }
+
+        // Left En Passant
+        if (advanced_three_ranks()) {
+            considered_position = position_;
+            considered_position.column -= 1;
+            if (valid_position(considered_position)) {
+                if (!board_->empty_on(considered_position)) {
+                    candidate_positions_.push(considered_position);
+                } 
+            }
+        }
+
+        // Right En Passant
+        if (advanced_three_ranks()) {
+            considered_position = position_;
+            considered_position.column += 1;
+            if (valid_position(considered_position)) {
+                if (!board_->empty_on(considered_position)) {
+                    candidate_positions_.push(considered_position);
+                } 
             }
         }
 
     } else {
         // Double Forward
-        if (first_move) {
-            Position considered_position = position;
-            considered_position.row -= 2;
-            if (valid_position(considered_position)) {
-                if (this->board->empty_on(considered_position)) {
-                    Move* new_move = new Move{position, considered_position, this, nullptr};
-                    if (!chess_engine->king_checked(new_move)) {
-                        chess_engine->evaluate_move(new_move, 1);
-                        this->moves.push_back(new_move);
-                    }
+        if (first_move()) {
+            Position considered_position = position_;
+            considered_position.row -= 1;
+            if (valid_position(considered_position) && board_->empty_on(considered_position)) {
+                considered_position.row -= 1;
+                if (valid_position(considered_position) && board_->empty_on(considered_position)) {
+                    candidate_positions_.push(considered_position);
                 }
             }
         }
 
         // Forward
-        Position considered_position = position;
+        Position considered_position = position_;
         considered_position.row -= 1;
         if (valid_position(considered_position)) {
-            if (this->board->empty_on(considered_position)) {
-                Move* new_move = new Move{position, considered_position, this, nullptr};
-                if (!chess_engine->king_checked(new_move)) {
-                    chess_engine->evaluate_move(new_move, 1);
-                    this->moves.push_back(new_move);
-                }
+            if (board_->empty_on(considered_position)) {
+                candidate_positions_.push(considered_position);
             }
         }
 
-        // Forward Right Capture
-        considered_position = position;
+        // Forward Right
+        considered_position = position_;
         considered_position.row -= 1;
         considered_position.column -= 1;
         if (valid_position(considered_position)) {
-            if (!this->board->empty_on(considered_position) && board->get_piece_on(considered_position)->white()) {
-                Move* new_move = new Move{position, considered_position, this, board->get_piece_on(considered_position)};
-                if (!chess_engine->king_checked(new_move)) {
-                    chess_engine->evaluate_move(new_move, 1);
-                    this->moves.push_back(new_move);
-                }
+            if (!board_->empty_on(considered_position)) {
+                candidate_positions_.push(considered_position);
             }
         }
 
-        // Forward Left Capture
-        considered_position = position;
+        // Forward Left
+        considered_position = position_;
         considered_position.row -= 1;
         considered_position.column += 1;
         if (valid_position(considered_position)) {
-            if (!this->board->empty_on(considered_position) && board->get_piece_on(considered_position)->white()) {
-                Move* new_move = new Move{position, considered_position, this, board->get_piece_on(considered_position)};
-                if (!chess_engine->king_checked(new_move)) {
-                    chess_engine->evaluate_move(new_move, 1);
-                    this->moves.push_back(new_move);
-                }
+            if (!board_->empty_on(considered_position)) {
+                candidate_positions_.push(considered_position);
+            }
+        }
+
+        // Left En Passant
+        if (advanced_three_ranks()) {
+            considered_position = position_;
+            considered_position.column += 1;
+            if (valid_position(considered_position)) {
+                if (!board_->empty_on(considered_position)) {
+                    candidate_positions_.push(considered_position);
+                } 
+            }
+        }
+
+        // Right En Passant
+        if (advanced_three_ranks()) {
+            considered_position = position_;
+            considered_position.column -= 1;
+            if (valid_position(considered_position)) {
+                if (!board_->empty_on(considered_position)) {
+                    candidate_positions_.push(considered_position);
+                } 
             }
         }
     }
 }
 
 void Pawn::update() {
-    calculate_moves();
+    generate_candidate_positions();
 }
