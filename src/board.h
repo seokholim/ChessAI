@@ -5,29 +5,29 @@
 #include "cell.h"
 #include "info.h"
 
-class Piece;
-
-class Move;
+class ChessPiece;
 
 class Board {
-    std::vector<std::vector<Cell>> grid; // 8 x 8
-    std::vector<Piece*> pieces;
-  public:
+public:
     Board();
     ~Board();
 
-    void create_piece_on(Piece* piece, Position pos);
-    void set_piece_on(Piece* piece, Position pos);
-    Piece* get_piece_on(Position pos);
-
+    void create_piece_on(ChessPiece* chess_piece, Position pos);
+    void set_piece_on(ChessPiece* chess_piece, Position pos);
     void remove_piece_on(Position pos);
     void delete_piece_on(Position pos);
 
-    std::vector<Piece*> get_pieces();
-    void move_piece(Position current_pos, Position new_pos);
+    void move(Position current_pos, Position new_pos);
     void undo();
 
-    bool empty_on(Position pos);
+    bool empty_on(Position pos) const;
+    ChessPiece* get_piece_on(Position pos) const;
+    std::vector<ChessPiece*> get_pieces() const;
+
+    Position location_of(ChessPiece* piece) const; // map
+private:
+    std::vector<std::vector<Cell>> grid_; // 8 x 8
+    std::vector<ChessPiece*> pieces_;
 };
 
 #endif
