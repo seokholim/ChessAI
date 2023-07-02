@@ -1,17 +1,62 @@
 #include "player.h"
 
-Player::Player(PlayerColour player_colour) : player_colour{player_colour} {}
+Player::Player(PlayerColour colour) : name_{}, colour_{colour}, pieces_{}, moves_{}, AI_{} {}
 
-Player::Player(std::string name, PlayerColour player_colour) : name{name}, player_colour{player_colour} {}
-
-void Player::set_name(std::string name) {
-    this->name = name;
+void Player::name(std::string name) {
+    name_ = name;
 }
 
-std::string Player::get_name() {
-    return this->name;
+std::string Player::name() const {
+    return name_;
 }
 
-PlayerColour Player::get_player_colour() {
-    return this->player_colour;
+PlayerColour Player::colour() const {
+    return colour_;
+}
+
+void Player::add_piece(std::shared_ptr<ChessPiece> piece) {
+    if (piece == nullptr) {
+        return;
+    }
+    pieces_.push_back(piece);
+}
+
+void Player::add_pieces(std::vector<std::shared_ptr<ChessPiece>> pieces) {
+    pieces_.insert(pieces_.end(), pieces.begin(), pieces.end());
+}
+
+std::vector<std::shared_ptr<ChessPiece>> Player::get_pieces() const {
+    return pieces_;
+}
+
+void Player::clear_moves() {
+    while(!moves_.empty()) {
+        moves_.pop();
+    }
+}
+
+void Player::generate_moves() { // TODO
+    clear_moves();
+}
+
+void Player::remove_best_move() {
+    if (moves_.empty()) {
+        return;
+    }
+    moves_.pop();
+}
+
+std::shared_ptr<Move> Player::get_best_move() {
+    if (moves_.empty()) {
+        return nullptr;
+    }
+    return moves_.top();
+}
+
+void Player::AI(bool AI) {
+    AI_ = AI;
+}
+
+bool Player::AI() {
+    return AI_;
 }
