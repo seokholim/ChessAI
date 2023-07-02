@@ -4,7 +4,7 @@
 
 class ChessPiece {
 public:
-    ChessPiece(Piece* data);
+    ChessPiece(std::shared_ptr<Piece> data);
     ~ChessPiece();
     
     PieceType type() const;
@@ -14,16 +14,17 @@ public:
     bool black() const;
 
     Position position() const;
-    bool in_range(const ChessPiece* other_piece) const;
+    bool in_range(const std::shared_ptr<ChessPiece> other) const;
 
     bool first_move() const;
 
-    std::priority_queue<Move*, std::vector<Move*>, CompareMove> moves() const;
-    Move* best_move() const;
+    std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> moves() const;
+    std::shared_ptr<Move> best_move() const;
 
     void print() const;
 private:
-    Piece* data_;
+    std::shared_ptr<Piece> data_;
+    friend class ChessGame; // TESTING
 };
 
 #endif

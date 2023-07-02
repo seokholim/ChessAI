@@ -6,10 +6,7 @@
 #include "chess_board.h"
 #include "subject.h"
 #include "info.h"
-
-class Move;
-
-class CompareMove;
+#include "move.h"
 
 class Piece : public Subject, public Observer {
 public:
@@ -21,13 +18,15 @@ public:
 
     void set_board(ChessBoard* board);
     bool has_board();
-    void print() const;
 
     virtual void generate_candidate_positions() = 0;
     void clear_candidate_positions();
-    void clear_moves();
+    std::queue<Position> candidate_positions();
 
-    // Piece can call 
+    void clear_moves();
+    void add_move(std::shared_ptr<Move> new_move);
+
+    // ChessBoard, ChessPiece can also call:
     PieceType type() const;
 
     PlayerColour colour() const;
@@ -35,12 +34,14 @@ public:
     bool black() const;
 
     Position position() const;
-    bool in_range(const Piece* other_piece) const; // TODO
+    bool in_range(const std::shared_ptr<Piece> other_piece) const; // TODO
 
     bool first_move() const;
 
-    std::priority_queue<Move*, std::vector<Move*>, CompareMove> moves() const;
-    Move* best_move() const;
+    std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> moves() const;
+    std::shared_ptr<Move> best_move() const;
+
+    void print() const;
 protected:
     const PieceType type_;
     const PlayerColour colour_;
@@ -49,9 +50,9 @@ protected:
     ChessBoard* board_;
 
     std::queue<Position> candidate_positions_;
-    std::priority_queue<Move*, std::vector<Move*>, CompareMove> moves_; // set by ChessEngine
+    std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> moves_; // set by ChessEngine
 
-    std::vector<Move*> move_history_;
+    std::vector<std::shared_ptr<Move>> move_history_;
 };
 
 #endif

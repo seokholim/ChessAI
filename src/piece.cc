@@ -37,8 +37,24 @@ bool Piece::has_board() {
     return true;
 }
 
-void Piece::print() const {
-    std::cout<< convert_to_char(colour_, type_);
+void Piece::clear_candidate_positions() {
+    while (!candidate_positions_.empty()) {
+        candidate_positions_.pop();
+    }
+}
+
+std::queue<Position> Piece::candidate_positions() {
+    return candidate_positions_;
+}
+
+void Piece::clear_moves() {
+    while (!moves_.empty()) {
+        moves_.pop();
+    }
+}
+
+void Piece::add_move(std::shared_ptr<Move> new_move) {
+    moves_.push(new_move);
 }
 
 PieceType Piece::type() const {
@@ -61,7 +77,7 @@ Position Piece::position() const {
     return position_;
 } 
 
-bool Piece::in_range(const Piece* other_Piece) const { // TODO
+bool Piece::in_range(const std::shared_ptr<Piece> other_Piece) const { // TODO
     return false;
 }
 
@@ -69,13 +85,17 @@ bool Piece::first_move() const {
     return move_history_.empty();
 }
 
-std::priority_queue<Move*, std::vector<Move*>, CompareMove> Piece::moves() const {
+std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> Piece::moves() const {
     return moves_;
 }
 
-Move* Piece::best_move() const {
+std::shared_ptr<Move> Piece::best_move() const {
     if (moves_.empty()) {
         return nullptr;
     }
     return moves_.top();
+}
+
+void Piece::print() const {
+    std::cout<< convert_to_char(colour_, type_);
 }
