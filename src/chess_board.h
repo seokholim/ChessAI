@@ -8,8 +8,8 @@ public:
     ~ChessBoard();
 
     bool empty_on(const Position& pos) const;
-    ChessPiece* get_piece_on(const Position& pos) const;
-    std::vector<ChessPiece*> get_pieces() const;
+    std::shared_ptr<ChessPiece> get_piece_on(const Position& pos) const;
+    std::vector<std::shared_ptr<ChessPiece>> get_pieces() const;
 private:
     Board* data_;
 };

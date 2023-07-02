@@ -6,18 +6,18 @@
 class ChessPiece;
 
 class Cell {
-    const char column;
-    const int row;
-    ChessPiece* piece;
+    char column;
+    int row;
+    std::shared_ptr<ChessPiece> piece;
 
 public:
     Cell();
     Cell(char column, int row);
 
-    ChessPiece* get_piece() const;
+    std::shared_ptr<ChessPiece> get_piece() const;
     bool empty() const;
 
-    void set_piece(ChessPiece* piece);
+    void set_piece(std::shared_ptr<ChessPiece> piece);
     void remove_piece();
     void delete_piece();
 

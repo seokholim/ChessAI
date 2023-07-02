@@ -11,14 +11,14 @@ bool ChessBoard::empty_on(const Position& pos) const {
     return data_->empty_on(pos);
 }
 
-ChessPiece* ChessBoard::get_piece_on(const Position& pos) const {
+std::shared_ptr<ChessPiece> ChessBoard::get_piece_on(const Position& pos) const {
     if (data_ == nullptr) {
         return nullptr;
     }
     return data_->get_piece_on(pos);
 }
 
-std::vector<ChessPiece*> ChessBoard::get_pieces() const {
+std::vector<std::shared_ptr<ChessPiece>> ChessBoard::get_pieces() const {
     if (data_ == nullptr) {
         return {};
     }

@@ -12,8 +12,8 @@ public:
     Board();
     ~Board();
 
-    void create_piece_on(ChessPiece* chess_piece, Position pos);
-    void set_piece_on(ChessPiece* chess_piece, Position pos);
+    void create_piece_on(std::shared_ptr<ChessPiece> chess_piece, Position pos);
+    void set_piece_on(std::shared_ptr<ChessPiece> chess_piece, Position pos);
     void remove_piece_on(Position pos);
     void delete_piece_on(Position pos);
 
@@ -21,13 +21,13 @@ public:
     void undo();
 
     bool empty_on(Position pos) const;
-    ChessPiece* get_piece_on(Position pos) const;
-    std::vector<ChessPiece*> get_pieces() const;
+    std::shared_ptr<ChessPiece> get_piece_on(Position pos) const;
+    std::vector<std::shared_ptr<ChessPiece>> get_pieces() const;
 
-    Position location_of(ChessPiece* piece) const; // map
+    Position location_of(std::shared_ptr<ChessPiece> piece) const; // map
 private:
     std::vector<std::vector<Cell>> grid_; // 8 x 8
-    std::vector<ChessPiece*> pieces_;
+    std::vector<std::shared_ptr<ChessPiece>> pieces_;
 };
 
 #endif
