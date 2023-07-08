@@ -15,8 +15,9 @@ public:
     std::string name() const;
     PlayerColour colour() const;
 
-    void add_piece(std::shared_ptr<ChessPiece> chess_piece);
-    void add_pieces(std::vector<std::shared_ptr<ChessPiece>> chess_pieces);
+    void remove_piece(std::shared_ptr<ChessPiece> piece);
+    void add_piece(std::shared_ptr<ChessPiece> piece);
+    void add_pieces(std::vector<std::shared_ptr<ChessPiece>> piece);
     std::vector<std::shared_ptr<ChessPiece>> get_pieces() const;
   
     void clear_moves();
@@ -27,10 +28,11 @@ public:
     void AI(bool AI);
     bool AI();
 private:
-    const PlayerColour colour_;
     std::string name_;
+    const PlayerColour colour_;
     std::vector<std::shared_ptr<ChessPiece>> pieces_;
-    std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> moves_;
+    std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> moves_t1_;
+    std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> moves_t2_;
 
     bool AI_;
 };
