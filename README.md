@@ -12,7 +12,7 @@ In **Engine**, each **Move** is validated and evaluated by building a **Scenario
 Valid **Move**s are evaluated by their parent **Scenario**, and then added to **Player**s.     
 Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it plays the **Move** with the highest value.   
 
-For the sake of brevity, interface classes were not introduced.
+For the sake of brevity, interface classes were not introduced in this overview.
 
 ## How to run
 
