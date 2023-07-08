@@ -32,6 +32,13 @@ bool ChessPiece::black() const {
     return data_->black();
 }
 
+Position ChessPiece::starting_position() const {
+    if (data_ == nullptr) {
+        return Position {};
+    }
+    return data_->starting_position();
+}
+
 Position ChessPiece::position() const {
     if (data_ == nullptr) {
         return Position {};
@@ -50,11 +57,18 @@ bool ChessPiece::first_move() const {
     return data_->first_move();
 }
 
-std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> ChessPiece::moves() const {
+std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> ChessPiece::moves_t1() const {
     if (data_ == nullptr) {
         return {};
     }
-    return data_->moves();
+    return data_->moves_t1();
+}
+
+std::priority_queue<std::shared_ptr<Move>, std::vector<std::shared_ptr<Move>>, CompareMove> ChessPiece::moves_t2() const {
+    if (data_ == nullptr) {
+        return {};
+    }
+    return data_->moves_t2();
 }
 
 std::shared_ptr<Move> ChessPiece::best_move() const {
