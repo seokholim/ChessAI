@@ -7,16 +7,16 @@
 #include <string>
 #include <chrono>
 #include <thread>
-#include "player.h"
-#include "chess_board.h"
-#include "engine.h"
-#include "piece.h"
-#include "rook.h"
-#include "knight.h"
-#include "bishop.h"
-#include "queen.h"
-#include "king.h"
-#include "pawn.h"
+#include "player/player.h"
+#include "board/chess_board.h"
+#include "engine/engine.h"
+#include "pieces/piece.h"
+#include "pieces/rook.h"
+#include "pieces/knight.h"
+#include "pieces/bishop.h"
+#include "pieces/queen.h"
+#include "pieces/king.h"
+#include "pieces/pawn.h"
 
 class Chess {
 public:
