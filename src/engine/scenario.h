@@ -2,17 +2,16 @@
 #define SCENARIO_H
 #include <memory>
 #include <vector>
-#include "piece.h"
-#include "board.h"
+#include "../pieces/piece.h"
+#include "../board/board.h"
 #include "move.h"
-#include "rook.h"
-#include "knight.h"
-#include "bishop.h"
-#include "queen.h"
-#include "king.h"
-#include "pawn.h"
-
-#include "chess_piece.h"
+#include "../pieces/rook.h"
+#include "../pieces/knight.h"
+#include "../pieces/bishop.h"
+#include "../pieces/queen.h"
+#include "../pieces/king.h"
+#include "../pieces/pawn.h"
+#include "../pieces/chess_piece.h"
 
 class Scenario {
 public:

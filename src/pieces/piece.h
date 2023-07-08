@@ -3,10 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include "chess_board.h"
+#include "../board/chess_board.h"
 #include "subject.h"
-#include "info.h"
-#include "move.h"
+#include "../utility/info.h"
+#include "../engine/move.h"
 
 class Piece : public Subject, public Observer {
 public:

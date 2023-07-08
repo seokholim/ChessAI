@@ -1,7 +1,7 @@
 #ifndef MOVE_H
 #define MOVE_H
 #include <iostream>
-#include "info.h"
+#include "../utility/info.h"
 
 class ChessPiece;
 

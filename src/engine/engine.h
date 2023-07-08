@@ -1,8 +1,8 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 #include "scenario.h"
-#include "board.h"
-#include "chess_piece.h"
+#include "../board/board.h"
+#include "../pieces/chess_piece.h"
 #include "move.h"
 
 class Engine {

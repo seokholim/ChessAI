@@ -3,9 +3,9 @@
 #include <vector>
 #include <string>
 #include <queue>
-#include "chess_piece.h"
-#include "info.h"
-#include "move.h"
+#include "../pieces/chess_piece.h"
+#include "../utility/info.h"
+#include "../engine/move.h"
 
 class Player {
 public:  

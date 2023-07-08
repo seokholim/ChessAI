@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "cell.h"
-#include "info.h"
+#include "../utility/info.h"
 
 class ChessPiece;
 
