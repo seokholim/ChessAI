@@ -1,19 +1,22 @@
 # Chess
 
-A chess game & AI made from scratch.
+A chess game CLI and AI made from scratch.
 
 ## Overview
 
-Here is a brief overview of how this Chess game is structured, using **ClassName**.  
+Using **ClassName**: 
 
-**Chess** is the main class that runs to create **Board** and make **Piece**s on it.    
-**Piece**s can make candidate **Position**s, but ultimately **Engine** makes the valid **Move**s for **Player**s.   
-**Move**s are evaluated by building a **Scenario** tree. If **Move**s are valid, they are added to **Player**s.    
-Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it plays the **Move** with the highest value.    
+**Chess** is the main class that runs to create **Board** and make **Piece**s on it.        
+**Piece**s look at **Board** and make candidate **Position**s, but **Chess** passes **Piece**s to **Engine** to make valid **Move**s for **Piece**s.     
+In **Engine**, each **Move** is validated and evaluated by building a **Scenario** tree. **Scenario** first copy constructs **Board** and **Piece**s, perform the given **Move**, and then recursivly constructs next **Scenario**s by considering opponent's **Move**s.     
+Valid **Move**s are evaluated by their parent **Scenario**, and then added to **Player**s.     
+Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it plays the **Move** with the highest value.   
+
+For the sake of brevity, interface classes were not introduced.
 
 ## How to run
 
-Run inside ***src*** directory:
+Run inside **src** directory:
 
 ```bash
 make
