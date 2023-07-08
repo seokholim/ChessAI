@@ -17,7 +17,7 @@ public:
     std::shared_ptr<ChessPiece> get_piece() const;
     bool empty() const;
 
-    void set_piece(std::shared_ptr<ChessPiece> piece);
+    void set_piece(const std::shared_ptr<ChessPiece>& piece);
     void remove_piece();
     void delete_piece();
 

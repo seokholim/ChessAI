@@ -14,7 +14,7 @@ bool Cell::empty() const {
 }
 
 // private:
-void Cell::set_piece(std::shared_ptr<ChessPiece> piece) {
+void Cell::set_piece(const std::shared_ptr<ChessPiece>& piece) {
     if (piece == nullptr) {
         std::cout << "Cell:set_piece; piece is nullptr!" << std::endl;
     } else {
