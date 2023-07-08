@@ -4,7 +4,7 @@ A chess game & AI made from scratch.
 
 ## Overview
 
-Here is a brief overview of how this Chess game is structured, using **className**.  
+Here is a brief overview of how this Chess game is structured, using **ClassName**.  
 
 **Chess** is the main class that runs to create **Board** and make **Piece**s on it.    
 **Piece**s can make candidate **Position**s, but ultimately **Engine** makes the valid **Move**s for **Player**s.   
