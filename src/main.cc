@@ -1,9 +1,9 @@
 #include <iostream>
-#include "chess_game.h"
+#include "chess.h"
 
 int main () {
     
-    ChessGame g;
+    Chess g;
 
     g.init();
 
