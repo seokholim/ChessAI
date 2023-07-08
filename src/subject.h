@@ -10,7 +10,7 @@ class Subject { // TODO: position
   public:
     void attach(std::shared_ptr<Observer> ob);
     void detach(std::shared_ptr<Observer> ob);
-    void notify();
+    void notify();    
 };
 
 #endif
