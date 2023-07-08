@@ -12,6 +12,9 @@ public:
     std::vector<std::shared_ptr<ChessPiece>> get_pieces() const;
 private:
     Board* data_;
+    friend class Chess;
+    friend class Engine;
+    friend class Scenario;
 };
 
 #endif
