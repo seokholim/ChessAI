@@ -1,21 +1,11 @@
 # Chess
 
-A simple chess game.
+A chess game & AI made from scratch.
 
-## To Be Implemented
+## Overview
 
-From basic features to somewhat sophisticated.
-
-### Basic 
-
-- [x] Observer Pattern for chess pieces
-- [ ] Moves for every piece type
-- [ ] Player vs Player
-- [ ] Undo a move
-
-### Somewhat Sophisticated
-
-- [ ] Window mode for mouse control, with possible moves showing when a chess piece is clicked
-- [ ] Make sound
-- [ ] Save and load
-- [ ] Ask advice
+Here is a brief overview of how this Chess game is structured.    
+**Chess** is the main class that runs to create **Board** and make **Pieces** on it.    
+**Pieces** can make candidate **Positions**, but ultimately **Engine** makes the valid **Moves** for **Players**.   
+**Moves** are evaluated by building a **Scenario** tree. If **Moves** are valid, they are added to **Players**.    
+Finally, **Players** plays the **Moves** each turn. If **Player** is AI, it plays the **Move** with the highest value.    
