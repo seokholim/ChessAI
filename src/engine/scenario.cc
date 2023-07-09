@@ -146,7 +146,7 @@ void Scenario::evaluate_move_type(std::shared_ptr<Move> move) { // TODO
         if (move->moving_piece()->type() == PieceType::Pawn) {
             move->value(7);
         } else if (move->moving_piece()->type() == PieceType::King) {
-            move->value(1);
+            move->value(-10);
         } else {
             move->value(5);
         }
@@ -160,7 +160,7 @@ void Scenario::evaluate_move_type(std::shared_ptr<Move> move) { // TODO
         if (move->moving_piece()->type() == PieceType::Pawn) {
             move->value(5);
         } else if (move->moving_piece()->type() == PieceType::King) {
-            move->value(1);
+            move->value(-10);
         } else {
             move->value(3);
         }
@@ -170,12 +170,15 @@ void Scenario::evaluate_move_type(std::shared_ptr<Move> move) { // TODO
         move->value(30);
     } else if (move->move_type() == MoveType::Upgrade) {
         move->value(100);
+    } else if (move->move_type() == MoveType::Checkmate) {
+        move->value(10000);
     }
+
 }
 
-Scenario::Scenario() : m_original_move{nullptr}, m_scenario_level{0}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_next_scenarios{}, m_scenario_colour{PlayerColour::Null}, m_scenario_value{0} {}
+Scenario::Scenario() : m_original_move{nullptr}, m_scenario_level{0}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_scenario_colour{PlayerColour::Null}, m_number_of_next_scenarios{0}, m_scenario_value{0} {}
 
-Scenario::Scenario(std::shared_ptr<Move> move, int level) : m_original_move{move}, m_scenario_level{level}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_next_scenarios{}, m_scenario_colour{PlayerColour::Null}, m_scenario_value{0} {
+Scenario::Scenario(std::shared_ptr<Move> move, int level) : m_original_move{move}, m_scenario_level{level}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_scenario_colour{PlayerColour::Null}, m_number_of_next_scenarios{0}, m_scenario_value{0} {
     // TODO: check valid move
     m_scenario_colour = m_original_move->moving_piece()->colour();
 
@@ -247,7 +250,7 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
                 while (!candidate_positions.empty()) {
                     Position candidate_position = candidate_positions.front();
                     if (m_new_board.get_piece_on(candidate_position) != nullptr) {
-                        if (m_new_board.get_piece_on(candidate_position)->colour() == piece->colour()) { // can't generate this scenario
+                        if (m_new_board.get_piece_on(candidate_position)->colour() == piece->colour()) { // opponent piece can't capture their piece
                             candidate_positions.pop();
                             continue;
                         } else if (m_new_board.get_piece_on(candidate_position)->type() == PieceType::King) {
@@ -262,7 +265,6 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
         }
         if (original_move_king_unsafe) {
             m_original_move->move_type(MoveType::KingUnsafe);
-            m_next_scenarios.clear();
             return;
         }
         set_move_type(m_original_move);
@@ -271,34 +273,24 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
     }
 
     // recursive case
-    int number_of_support = 0;
-    int number_of_opponenet_attack = 0;
-    int number_of_critical_attack = 0;
+    int support = 0; // number of ally pieces that can move to piece after move
+    int opponent_attack = 0; // number of opponent pieces that can capture piece after move
+    int critical_opponent_attack = 0; // number of weaker opponent pieces that can capture piece after move
+    bool original_move_checkmate_candidate = true; // every move is a candidate for checkmate, until opponent's next valid move is found
     for (auto piece: m_pieces_data_copy) {
         if (piece->colour() != m_scenario_colour) { // consider opponent pieces' candidate positions
-            bool candidate_opponent_attack = false; // if piece can attack m_move_copy moving piece after m_move_copy move
             std::queue<Position> candidate_positions = piece->candidate_positions();
+            std::vector<std::shared_ptr<Move>> candidate_moves; // TODO: multithreading
+            std::shared_ptr<Move> candidate_move;
             while (!candidate_positions.empty()) {
                 Position candidate_position = candidate_positions.front();
-                if (candidate_position == m_move_copy->move_to()) { // piece could attack; check scenario
-                    candidate_opponent_attack = true;
-                    std::shared_ptr<Move> candidate_move = std::make_shared<Move>(piece->position(), candidate_position, m_new_board.get_piece_on(piece->position()), m_new_board.get_piece_on(candidate_position));
-                    Scenario next_scenario {candidate_move, m_scenario_level - 1};
-                    next_scenario.move();
-                    next_scenario.generate_next_scenarios();
-                    if (candidate_move->move_type() != MoveType::KingUnsafe) { // piece can attack
-                        next_scenario.evaluate();
-                        if (scenario_evaluation_debug) {
-                            std::cout << "----- Sub Scenario for a move from " << candidate_move->move_from().column << candidate_move->move_from().row << " to " << candidate_move->move_to().column << candidate_move->move_to().row << " by ";
-                            candidate_move->moving_piece()->print();
-                            std::cout << " at level " << m_scenario_level - 1 << " has value: " << next_scenario.value() << std::endl;
-                        }
-                        m_next_scenarios.push_back(std::make_shared<Scenario>(next_scenario));
-                        ++number_of_opponenet_attack;
-                        if (unbalanced_trade(m_move_copy->moving_piece()->type(), piece->type())) {
-                            ++number_of_critical_attack;
-                        }
+                if (candidate_position == m_move_copy->move_to()) { // piece could attack moving piece; check scenario
+                    if (m_move_copy->moving_piece()->type() == PieceType::King) {
+                        original_move_king_unsafe = true;
+                        break;
                     }
+                    candidate_move = std::make_shared<Move>(piece->position(), candidate_position, m_new_board.get_piece_on(piece->position()), m_new_board.get_piece_on(candidate_position));
+                    candidate_moves.push_back(candidate_move);
                     candidate_positions.pop();
                     continue;
                 }
@@ -313,65 +305,93 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
                     }
                 }
                 std::shared_ptr<Move> candidate_move = std::make_shared<Move>(piece->position(), candidate_position, m_new_board.get_piece_on(piece->position()), m_new_board.get_piece_on(candidate_position));
-                // std::cout << "----- Creating a Sub Scenario for a move from " << candidate_move->move_from().column << candidate_move->move_from().row << " to " << candidate_move->move_to().column << candidate_move->move_to().row << " by ";
-                // candidate_move->moving_piece()->print();
-                // std::cout << std::endl;
-                Scenario next_scenario {candidate_move, m_scenario_level - 1};
-                next_scenario.move();
-                next_scenario.generate_next_scenarios();
-                if (candidate_move->move_type() != MoveType::KingUnsafe) {
-                    next_scenario.evaluate();
-                    if (scenario_evaluation_debug) {
-                        std::cout << "----- Sub Scenario for a move from " << candidate_move->move_from().column << candidate_move->move_from().row << " to " << candidate_move->move_to().column << candidate_move->move_to().row << " by ";
-                        candidate_move->moving_piece()->print();
-                        std::cout << " at level " << m_scenario_level - 1 << " has value: " << next_scenario.value() << std::endl;
-                    }
-                    m_next_scenarios.push_back(std::make_shared<Scenario>(next_scenario));
-                }
+                candidate_moves.push_back(candidate_move);
                 candidate_positions.pop();
             }
             if (original_move_king_unsafe) break;
+            
+            if (m_scenario_level == 1) {
+                // single thread for base case
+                for (auto& move : candidate_moves) {
+                    Engine::run_scenario(move, 0);
+                }
+            } else {
+                // multithreading
+                std::thread threads[candidate_moves.size()];
+                for (int i = 0; i < candidate_moves.size(); ++i) {
+                    threads[i] = std::thread(&Engine::run_scenario, std::ref(candidate_moves[i]), m_scenario_level - 1);
+                }
+                for (std::thread& t : threads) {
+                    t.join();
+                }
+            }
+
+            for (auto& move : candidate_moves) {
+                if (move->move_type() != MoveType::KingUnsafe) {
+                    ++m_number_of_next_scenarios;
+                    original_move_checkmate_candidate = false;
+                    if (m_move_copy->move_to() == move->move_to()) {
+                        ++opponent_attack;
+                        if (unbalanced_trade(m_move_copy->moving_piece()->type(), move->moving_piece()->type())) {
+                            ++critical_opponent_attack;
+                        }
+                    }
+                    m_scenario_value -= move->value();
+                }
+            }
         } else {
-            if (piece->position() == m_move_copy->moving_piece()->position()) { // TODO check defensive moves
+            if (piece->position() == m_move_copy->moving_piece()->position()) { // TODO: defensive moves?
                 continue;
             }
             std::queue<Position> candidate_positions = piece->candidate_positions();
+            std::vector<std::shared_ptr<Move>> candidate_moves;
+            std::shared_ptr<Move> candidate_move;
             while (!candidate_positions.empty()) {
                 Position candidate_position = candidate_positions.front();
                 if (candidate_position == m_move_copy->move_to()) {
                     std::shared_ptr<Move> candidate_move = std::make_shared<Move>(piece->position(), candidate_position, m_new_board.get_piece_on(piece->position()), m_new_board.get_piece_on(candidate_position));
-                    Scenario candidate_support {candidate_move, 0};
-                    candidate_support.move();
-                    candidate_support.generate_next_scenarios();
-                    if (candidate_move->move_type() != MoveType::KingUnsafe) {
-                        ++number_of_support;
-                    }
+                    candidate_moves.push_back(candidate_move);
                 }
                 candidate_positions.pop();
             }
+
+            // single thread for base case
+            for (auto& move : candidate_moves) {
+                Engine::run_scenario(move, 0);
+            }
+
+            for (auto& move : candidate_moves) {
+                if (move->move_type() != MoveType::KingUnsafe) {
+                    ++support;
+                }
+            }
         }
+    }
+    if (original_move_checkmate_candidate) {
+        m_original_move->move_type(MoveType::Checkmate);
     }
     if (original_move_king_unsafe) {
         m_original_move->move_type(MoveType::KingUnsafe);
-        m_next_scenarios.clear();
         return;
     }
 
-    // TODO
+    // TODO: improve
     set_move_type(m_original_move);
     evaluate_move_type(m_original_move);
-    if (number_of_support == 0) {
-        if (number_of_opponenet_attack == 0) { // OK
-            if (m_original_move->move_type() == MoveType::Capturing) {
-                m_original_move->move_type(MoveType::CapturingForFree);
-                evaluate_move_type(m_original_move);
-            }
-            if (m_original_move->move_type() == MoveType::Neutral) {
-                m_original_move->move_type(MoveType::SafeNeutral);
-                evaluate_move_type(m_original_move);
+    if (support == 0) {
+        if (opponent_attack == 0) { // OK
+            if (m_original_move->move_type() != MoveType::Checkmate) {
+                if (m_original_move->move_type() == MoveType::Capturing) {
+                    m_original_move->move_type(MoveType::CapturingForFree);
+                    evaluate_move_type(m_original_move);
+                }
+                if (m_original_move->move_type() == MoveType::Neutral) {
+                    m_original_move->move_type(MoveType::SafeNeutral);
+                    evaluate_move_type(m_original_move);
+                }
             }
         } else { // Possibly not ok
-            if (number_of_critical_attack == 0) {
+            if (critical_opponent_attack == 0) {
                 if (m_original_move->move_type() == MoveType::Capturing) {
                     evaluate_move_type(m_original_move);
                 } else {
@@ -385,21 +405,23 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
             
         }
     } else {
-        if (number_of_support > number_of_opponenet_attack) {
-            if (number_of_critical_attack == 0) {
-                if (m_original_move->move_type() == MoveType::Capturing) {
-                    m_original_move->move_type(MoveType::CapturingForFree);
-                    evaluate_move_type(m_original_move);
-                } else if (m_original_move->move_type() == MoveType::Neutral) {
-                    m_original_move->move_type(MoveType::SafeNeutral);
+        if (support > opponent_attack) {
+            if (m_original_move->move_type() != MoveType::Checkmate) {
+                if (critical_opponent_attack == 0) {
+                    if (m_original_move->move_type() == MoveType::Capturing) {
+                        m_original_move->move_type(MoveType::CapturingForFree);
+                        evaluate_move_type(m_original_move);
+                    } else if (m_original_move->move_type() == MoveType::Neutral) {
+                        m_original_move->move_type(MoveType::SafeNeutral);
+                        evaluate_move_type(m_original_move);
+                    }
+                } else {
+                    m_original_move->move_type(MoveType::Dangerous);
                     evaluate_move_type(m_original_move);
                 }
-            } else {
-                m_original_move->move_type(MoveType::Dangerous);
-                evaluate_move_type(m_original_move);
             }
-        } else if (number_of_support < number_of_opponenet_attack) { // BAD
-            if (number_of_critical_attack == 0) {
+        } else if (support < opponent_attack) { // BAD
+            if (critical_opponent_attack == 0) {
                 if (m_original_move->move_type() == MoveType::Capturing) {
                     evaluate_move_type(m_original_move);
                 } else {
@@ -415,20 +437,7 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
  }
 
 void Scenario::evaluate() {
-    // TODO: check valid m_original_move
-    if (m_next_scenarios.empty()) {
-        m_scenario_value = m_original_move->value();
-        return;
-    }
-    int total_scenarios_values = 0;
-    for (auto& scenario : m_next_scenarios) {
-        if (scenario != nullptr) {
-            int scenario_value = scenario->value();
-            total_scenarios_values += scenario_value;
-        }
-    }
-    int average_value = safe_division(total_scenarios_values, m_next_scenarios.size());
-    m_scenario_value -= average_value;
+    m_scenario_value = safe_division(m_scenario_value, m_number_of_next_scenarios);
     m_scenario_value += m_original_move->value();
 }
 

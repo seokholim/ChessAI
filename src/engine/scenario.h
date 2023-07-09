@@ -2,9 +2,11 @@
 #define SCENARIO_H
 #include <memory>
 #include <vector>
+#include <thread>
+#include "engine.h"
+#include "move.h"
 #include "../pieces/piece.h"
 #include "../board/board.h"
-#include "move.h"
 #include "../pieces/rook.h"
 #include "../pieces/knight.h"
 #include "../pieces/bishop.h"
@@ -40,7 +42,7 @@ private:
     std::vector<std::shared_ptr<Piece>> m_pieces_data_copy;
     PlayerColour m_scenario_colour;
 
-    std::vector<std::shared_ptr<Scenario>> m_next_scenarios;
+    int m_number_of_next_scenarios;
     int m_scenario_value;
 };
 
