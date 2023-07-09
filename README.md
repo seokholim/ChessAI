@@ -14,6 +14,9 @@ Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it play
 
 For the sake of brevity, interface classes **ChessBoard** and **ChessPiece** were not introduced in this overview.
 
+## Video Demonstration (until Turn 30)
+https://github.com/seokholim/Chess/assets/59181749/c125598d-ed37-4d02-a1c8-396e0e731267
+
 ## How to run
 
 Run inside **src** directory:
