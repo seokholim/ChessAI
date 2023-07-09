@@ -102,14 +102,15 @@ bool valid_direction(Direction direction) {
 bool valid_chess_move_type(MoveType move_type) {
     if (move_type == MoveType::Capturing || move_type == MoveType::Evading || move_type == MoveType::Neutral
     ||  move_type == MoveType::Castling || move_type == MoveType::EnPassant || move_type == MoveType::Upgrade
-    ||  move_type == MoveType::Dangerous || move_type == MoveType::CapturingForFree || move_type == MoveType::SafeNeutral) {
+    ||  move_type == MoveType::Dangerous || move_type == MoveType::CapturingForFree || move_type == MoveType::SafeNeutral 
+    || move_type == MoveType::Checkmate) {
         return true;
     }
     return false;
 }
 
 bool is_move_t1(MoveType move_type) {
-    if (move_type == MoveType::Castling) {
+    if (move_type == MoveType::Castling || move_type == MoveType::Checkmate) {
         return true;
     }
     return false;

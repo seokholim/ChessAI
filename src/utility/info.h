@@ -39,7 +39,7 @@ enum class Direction {
 bool valid_direction(Direction direction);
 
 enum class MoveType {
-    Null, Unevaluated, Capturing, CapturingForFree, Defending, Dangerous, Evading, Neutral, SafeNeutral, Castling, EnPassant, Upgrade, KingUnsafe
+    Null, Unevaluated, Capturing, CapturingForFree, Defending, Dangerous, Evading, Neutral, SafeNeutral, Castling, EnPassant, Upgrade, KingUnsafe, Checkmate
 };
 
 bool valid_chess_move_type(MoveType move_type);
@@ -50,40 +50,40 @@ int safe_division(int a, int b);
 
 // Capture Move base values
 
-const int pawn_capturing_pawn = 30;
-const int pawn_capturing_rook = 150;
-const int pawn_capturing_knight = 150;
-const int pawn_capturing_bishop = 150;
+const int pawn_capturing_pawn = 20;
+const int pawn_capturing_rook = 70;
+const int pawn_capturing_knight = 70;
+const int pawn_capturing_bishop = 70;
 const int pawn_capturing_queen = 300;
-const int pawn_capturing_king = 20;
+const int pawn_capturing_king = 1000;
 
 const int rook_capturing_pawn = 10;
 const int rook_capturing_rook = 50;
 const int rook_capturing_knight = 50;
 const int rook_capturing_bishop = 50;
 const int rook_capturing_queen = 300;
-const int rook_capturing_king = 20;
+const int rook_capturing_king = 1000;
 
 const int knight_capturing_pawn = 10;
 const int knight_capturing_rook = 50;
 const int knight_capturing_knight = 50;
 const int knight_capturing_bishop = 50;
 const int knight_capturing_queen = 300;
-const int knight_capturing_king = 20;
+const int knight_capturing_king = 1000;
 
 const int bishop_capturing_pawn = 10;
 const int bishop_capturing_rook = 50;
 const int bishop_capturing_knight = 50;
 const int bishop_capturing_bishop = 50;
 const int bishop_capturing_queen = 300;
-const int bishop_capturing_king = 20;
+const int bishop_capturing_king = 1000;
 
 const int queen_capturing_pawn = 10;
 const int queen_capturing_rook = 50;
 const int queen_capturing_knight = 50;
 const int queen_capturing_bishop = 50;
 const int queen_capturing_queen = 300;
-const int queen_capturing_king = 20;
+const int queen_capturing_king = 1000;
 
 const int king_capturing_pawn = 5;
 const int king_capturing_rook = 5;
