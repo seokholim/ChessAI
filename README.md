@@ -2,6 +2,9 @@
 
 A chess game CLI and AI made from scratch.
 
+## Video Demonstration (AI vs AI; until Turn 30)
+https://github.com/seokholim/Chess/assets/59181749/c125598d-ed37-4d02-a1c8-396e0e731267
+
 ## Overview
 
 Using **ClassName**: 
@@ -13,9 +16,6 @@ Valid **Move**s are evaluated by their parent **Scenario**, and then added to **
 Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it plays the **Move** with the highest value.   
 
 For the sake of brevity, interface classes **ChessBoard** and **ChessPiece** were not introduced in this overview.
-
-## Video Demonstration (AI vs AI; until Turn 30)
-https://github.com/seokholim/Chess/assets/59181749/c125598d-ed37-4d02-a1c8-396e0e731267
 
 ## How to run
 
