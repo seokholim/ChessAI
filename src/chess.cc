@@ -1,6 +1,6 @@
 #include "chess.h"
 
-Chess::Chess() : white_player_{PlayerColour::White}, black_player_{PlayerColour::Black}, board_{}, turn_number_{0}, play_against_AI_{}, engine_{} {}
+Chess::Chess() : white_player_{PlayerColour::White}, black_player_{PlayerColour::Black}, board_{}, turn_number_{0}, play_against_White_{false}, play_against_Black_{false}, play_against_Human_{false}, engine_{} {}
 
 Chess::~Chess() {}
 
@@ -29,7 +29,7 @@ void Chess::initialize_players() {
                 ss >> white_or_black;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 if (white_or_black == 'a') {
-                    play_against_AI_ = true;
+                    play_against_Black_ = true;
                     std::string white_player_name;
                     std::cout << "- White Player's name: ";
                     std::getline(std::cin, white_player_name);
@@ -40,7 +40,7 @@ void Chess::initialize_players() {
                     std::cout << std::endl;
                     break;
                 } else if (white_or_black == 'b') {
-                    play_against_AI_ = true;
+                    play_against_White_ = true;
                     std::string black_player_name;
                     std::cout << "- Black Player's name: ";
                     std::getline(std::cin, black_player_name);
@@ -54,9 +54,9 @@ void Chess::initialize_players() {
                     std::cout << "please choose again!" << std::endl;
                 }
             }
-            if (play_against_AI_) break;
+            if (play_against_White_ || play_against_Black_) break;
         } else if (game_type == 2) {
-            play_against_AI_ = false;
+            play_against_Human_ = true;
             std::string white_player_name, black_player_name;
             std::cout << "- White Player name: ";
             std::getline(std::cin, white_player_name);
@@ -301,9 +301,9 @@ void Chess::run() {
             print_board();
             move_from_selected = move_to_selected = turn_success = false;
             if (white_player_turn()) {
-                std::cout << "- " << white_player_.name() << "'s turn! Calculating......" << std::endl;
-                engine_.generate_moves_for_pieces(white_player_.get_pieces(), true);
-                if (play_against_AI_) {
+                std::cout << "- " << white_player_.name() << "'s turn!" << std::endl;
+                engine_.generate_moves_for_pieces(white_player_.get_pieces(), play_against_White_);
+                if (play_against_White_) {
                     std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
                     if (AI_move == nullptr) { // No move to play for AI;
                         std::cout << "- White has no move to play! Black wins!" << std::endl;
@@ -314,9 +314,9 @@ void Chess::run() {
                     continue;
                 }
             } else {
-                std::cout << "- " << black_player_.name() << "'s turn! Calculating......" << std::endl;
-                engine_.generate_moves_for_pieces(black_player_.get_pieces(), true);
-                if (play_against_AI_) {
+                std::cout << "- " << black_player_.name() << "'s turn!" << std::endl;
+                engine_.generate_moves_for_pieces(black_player_.get_pieces(), play_against_Black_);
+                if (play_against_Black_) {
                     std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
                     if (AI_move == nullptr) { // No move to play for AI;
                         std::cout << "- Black has no move to play! White wins!" << std::endl;
@@ -447,70 +447,74 @@ bool Chess::black_player_turn() {
     return (turn_number_ % 2) == 0; 
 }
 
-void Chess::print_board() { // TODO: refactor
+void Chess::print_board() {
     if (white_player_turn()) {
-        for (int i = 0; i < 8; ++i) { // row 8-1
-            std::cout << 8 - i;
-            for (int j = 0; j < 8; ++j) { // col a-h
-                if (board_.get_piece_on({static_cast<char>('a' + j), 8 - i}) == nullptr) {
-                    std::cout << " ";
-                } else {
-                    board_.get_piece_on({static_cast<char>('a' + j), 8 - i})->print();
+        if (play_against_Human_ || play_against_Black_) {
+            std::cout << " ================" << std::endl;
+            for (int i = 0; i < 8; ++i) { // row 8-1
+                std::cout << 8 - i;
+                for (int j = 0; j < 8; ++j) { // col a-h
+                    if (board_.get_piece_on({static_cast<char>('a' + j), 8 - i}) == nullptr) {
+                        std::cout << " ";
+                    } else {
+                        board_.get_piece_on({static_cast<char>('a' + j), 8 - i})->print();
+                    }
+                    std::cout << "|";
                 }
-                std::cout << "|";
+                std::cout << std::endl;
             }
-            std::cout << std::endl;
+            std::cout << " a b c d e f g h" << std::endl;
+            std::cout << " ================" << std::endl;
+        } else {
+            std::cout << " ================" << std::endl;
+            for (int i = 0; i < 8; ++i) { // row 1-8
+                std::cout << i + 1;
+                for (int j = 0; j < 8; ++j) { // col h-a
+                    if (board_.get_piece_on({static_cast<char>('h' - j), i + 1}) == nullptr) {
+                        std::cout << " ";
+                    } else {
+                        board_.get_piece_on({static_cast<char>('h' - j), i + 1})->print();
+                    }
+                    std::cout << "|";
+                }
+                std::cout << std::endl;
             }
-        std::cout << " a b c d e f g h" << std::endl;
-        std::cout << " ================" << std::endl;
-
-        // std::cout << " ================" << std::endl;
-        // for (int i = 0; i < 8; ++i) { // row 1-8
-        //     std::cout << i + 1;
-        //     for (int j = 0; j < 8; ++j) { // col h-a
-        //         if (board_.get_piece_on({static_cast<char>('h' - j), i + 1}) == nullptr) {
-        //             std::cout << " ";
-        //         } else {
-        //             board_.get_piece_on({static_cast<char>('h' - j), i + 1})->print();
-        //         }
-        //         std::cout << "|";
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // std::cout << " h g f e d c b a" << std::endl;
-        // std::cout << " ================" << std::endl;
-
+            std::cout << " h g f e d c b a" << std::endl;
+            std::cout << " ================" << std::endl;
+        }
     } else {
-        // TESTING TESTING AI VS AI
-        for (int i = 0; i < 8; ++i) { // row 8-1
-            std::cout << 8 - i;
-            for (int j = 0; j < 8; ++j) { // col a-h
-                if (board_.get_piece_on({static_cast<char>('a' + j), 8 - i}) == nullptr) {
-                    std::cout << " ";
-                } else {
-                    board_.get_piece_on({static_cast<char>('a' + j), 8 - i})->print();
+        if (play_against_Human_ || play_against_White_) {
+            std::cout << " ================" << std::endl;
+            for (int i = 0; i < 8; ++i) { // row 1-8
+                std::cout << i + 1;
+                for (int j = 0; j < 8; ++j) { // col h-a
+                    if (board_.get_piece_on({static_cast<char>('h' - j), i + 1}) == nullptr) {
+                        std::cout << " ";
+                    } else {
+                        board_.get_piece_on({static_cast<char>('h' - j), i + 1})->print();
+                    }
+                    std::cout << "|";
                 }
-                std::cout << "|";
+                std::cout << std::endl;
             }
-            std::cout << std::endl;
-            }
-        std::cout << " a b c d e f g h" << std::endl;
-        std::cout << " ================" << std::endl;
-
-        // std::cout << " ================" << std::endl;
-        // for (int i = 0; i < 8; ++i) { // row 1-8
-        //     std::cout << i + 1;
-        //     for (int j = 0; j < 8; ++j) { // col h-a
-        //         if (board_.get_piece_on({static_cast<char>('h' - j), i + 1}) == nullptr) {
-        //             std::cout << " ";
-        //         } else {
-        //             board_.get_piece_on({static_cast<char>('h' - j), i + 1})->print();
-        //         }
-        //         std::cout << "|";
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // std::cout << " h g f e d c b a" << std::endl;
-        // std::cout << " ================" << std::endl;
+            std::cout << " h g f e d c b a" << std::endl;
+            std::cout << " ================" << std::endl;
+        } else {
+            std::cout << " ================" << std::endl;
+            for (int i = 0; i < 8; ++i) { // row 8-1
+                std::cout << 8 - i;
+                for (int j = 0; j < 8; ++j) { // col a-h
+                    if (board_.get_piece_on({static_cast<char>('a' + j), 8 - i}) == nullptr) {
+                        std::cout << " ";
+                    } else {
+                        board_.get_piece_on({static_cast<char>('a' + j), 8 - i})->print();
+                    }
+                    std::cout << "|";
+                }
+                std::cout << std::endl;
+                }
+            std::cout << " a b c d e f g h" << std::endl;
+            std::cout << " ================" << std::endl;
+        }
     }
 }

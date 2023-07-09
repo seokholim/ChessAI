@@ -47,7 +47,9 @@ private:
     Board board_;
     std::vector<std::shared_ptr<Piece>> pieces_;
     int turn_number_;
-    bool play_against_AI_;
+    bool play_against_White_;
+    bool play_against_Black_;
+    bool play_against_Human_;
     Engine engine_;
     std::vector<std::shared_ptr<Move>> history_;
 };
