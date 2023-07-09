@@ -1,6 +1,6 @@
 #include "chess.h"
 
-Chess::Chess() : white_player_{PlayerColour::White}, black_player_{PlayerColour::Black}, board_{}, turn_number_{0}, play_against_AI_{}, engine_{&board_, pieces_} {}
+Chess::Chess() : white_player_{PlayerColour::White}, black_player_{PlayerColour::Black}, board_{}, turn_number_{0}, play_against_AI_{}, engine_{} {}
 
 Chess::~Chess() {}
 
@@ -35,8 +35,9 @@ void Chess::initialize_players() {
                     std::getline(std::cin, white_player_name);
                     white_player_.name(white_player_name);
 
-                    black_player_.name("AI Level 1");
+                    black_player_.name("Black_AI");
                     black_player_.AI(true);
+                    std::cout << std::endl;
                     break;
                 } else if (white_or_black == 'b') {
                     play_against_AI_ = true;
@@ -45,8 +46,9 @@ void Chess::initialize_players() {
                     std::getline(std::cin, black_player_name);
                     black_player_.name(black_player_name);
 
-                    white_player_.name("AI Level 1");
+                    white_player_.name("White_AI");
                     white_player_.AI(true);
+                    std::cout << std::endl;
                     break;
                 } else {
                     std::cout << "please choose again!" << std::endl;
@@ -296,27 +298,24 @@ void Chess::run() {
         if (turn_success) {
             turn_number_ += 1;
             std::cout << "*** Turn: " << turn_number_ << " ***" << std::endl;
-            if (turn_number_ == 30) {
-                break;
-            }
             print_board();
             move_from_selected = move_to_selected = turn_success = false;
             if (white_player_turn()) {
-                std::cout << "- " << white_player_.name() << "'s turn!" << std::endl;
-                engine_.generate_moves_for(white_player_.get_pieces(), false); // WHITE PLAYER TEST
-                // if (play_against_AI_) {
-                //     std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
-                //     if (AI_move == nullptr) { // No move to play for AI;
-                //         std::cout << "- White has no move to play! Black wins!" << std::endl;
-                //         break;
-                //     }
-                //     move(AI_move);
-                //     turn_success = true;
-                //     continue;
-                // }
+                std::cout << "- " << white_player_.name() << "'s turn! Calculating......" << std::endl;
+                engine_.generate_moves_for_pieces(white_player_.get_pieces(), true);
+                if (play_against_AI_) {
+                    std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
+                    if (AI_move == nullptr) { // No move to play for AI;
+                        std::cout << "- White has no move to play! Black wins!" << std::endl;
+                        break;
+                    }
+                    move(AI_move);
+                    turn_success = true;
+                    continue;
+                }
             } else {
                 std::cout << "- " << black_player_.name() << "'s turn! Calculating......" << std::endl;
-                engine_.generate_moves_for(black_player_.get_pieces(), true);
+                engine_.generate_moves_for_pieces(black_player_.get_pieces(), true);
                 if (play_against_AI_) {
                     std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
                     if (AI_move == nullptr) { // No move to play for AI;
@@ -424,10 +423,14 @@ void Chess::run() {
                     turn_success = true;
                 } else {
                     std::cout << "- You can't move there! " << std::endl;
+                    move_from_selected = false;
                 }
             } else {
                 std::cout << "- It is not your piece! " << std::endl;
             }
+        }
+        if (turn_number_ == 100) {
+            break;
         }
     }
 }
@@ -460,6 +463,23 @@ void Chess::print_board() { // TODO: refactor
             }
         std::cout << " a b c d e f g h" << std::endl;
         std::cout << " ================" << std::endl;
+
+        // std::cout << " ================" << std::endl;
+        // for (int i = 0; i < 8; ++i) { // row 1-8
+        //     std::cout << i + 1;
+        //     for (int j = 0; j < 8; ++j) { // col h-a
+        //         if (board_.get_piece_on({static_cast<char>('h' - j), i + 1}) == nullptr) {
+        //             std::cout << " ";
+        //         } else {
+        //             board_.get_piece_on({static_cast<char>('h' - j), i + 1})->print();
+        //         }
+        //         std::cout << "|";
+        //     }
+        //     std::cout << std::endl;
+        // }
+        // std::cout << " h g f e d c b a" << std::endl;
+        // std::cout << " ================" << std::endl;
+
     } else {
         // TESTING TESTING AI VS AI
         for (int i = 0; i < 8; ++i) { // row 8-1
