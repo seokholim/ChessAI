@@ -13,9 +13,11 @@ A brief overview using **ClassName**:
 **Piece**s look at **Board** and make candidate **Position**s, but **Chess** passes **Piece**s to **Engine** to generate **Move**s for **Piece**s.     
 **Engine** validates and evaluates each **Move** by running the **Move**'s **Scenario**. **Scenario** first copy constructs **Board** and **Piece**s from the current **Board** and **Piece**s, perform the given **Move**, and then recursivly calls **Engine** to run next **Scenario**s for opponent's next candidate **Move**s. The best performance so far was achieved when the depth of the recursion was 2, excluding the root layer.                 
 After candidate **Move**s are evaluated, they are added to **Player**s.      
-Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it plays the **Move** with the highest value.    
+Finally, **Player** plays a **Move** in their turn. If **Player** is AI, it plays the **Move** with the highest value.  
+When a **Move** is played, **Piece**s are notified to make new candidate **Position**s, which are again passed to **Engine** to generate new **Move**s for their turn.     
 
-IMPORTANT NOTE: The reason why I designed **Scenario** to copy construct **Board** and **Piece**s was so that **Engine** could have multiple threads to run **Scenario**s concurrently for a given **Piece**'s candidate **Move**s, *without sharing data between threads*.    
+IMPORTANT NOTE:     
+The reason why I designed **Scenario** to copy construct **Board** and **Piece**s was so that **Engine** could have multiple threads to run **Scenario**s concurrently for a given **Piece**'s candidate **Move**s, *without sharing data between threads*.    
 When evaluating base cases for **Scenario**s, *multithreading did not yield an improved result*. Therefore, a single thread was used for base cases.    
 Moreover, for the sake of brevity, interface classes **ChessBoard** and **ChessPiece** were not introduced in this overview.   
 
