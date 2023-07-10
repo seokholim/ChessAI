@@ -3,7 +3,6 @@
 #include "piece.h"
 
 class Pawn : public Piece {
-
 public:
     Pawn(PlayerColour colour);
     bool advanced_three_ranks();
