@@ -5,12 +5,12 @@
 #include "observer.h"
 
 class Subject { // TODO: position
-  protected:
-    std::vector<std::shared_ptr<Observer>> observers;
-  public:
+public:
     void attach(std::shared_ptr<Observer> ob);
     void detach(std::shared_ptr<Observer> ob);
     void notify();    
+protected:
+    std::vector<std::shared_ptr<Observer>> observers;
 };
 
 #endif
