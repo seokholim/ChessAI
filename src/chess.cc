@@ -302,8 +302,8 @@ void Chess::run() {
             move_from_selected = move_to_selected = turn_success = false;
             if (white_player_turn()) {
                 std::cout << "- " << white_player_.name() << "'s turn!" << std::endl;
-                engine_.generate_moves_for_pieces(white_player_.get_pieces(), play_against_White_);
-                if (play_against_White_) {
+                engine_.generate_moves_for_pieces(white_player_.get_pieces(), !play_against_White_); // TESTING
+                if (!play_against_White_) { // TESTING
                     std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
                     if (AI_move == nullptr) { // No move to play for AI;
                         std::cout << "- White has no move to play! Black wins!" << std::endl;
@@ -316,7 +316,7 @@ void Chess::run() {
             } else {
                 std::cout << "- " << black_player_.name() << "'s turn!" << std::endl;
                 engine_.generate_moves_for_pieces(black_player_.get_pieces(), play_against_Black_);
-                if (play_against_Black_) {
+                if (play_against_White_ || play_against_Black_) { // TESTING
                     std::shared_ptr<Move> AI_move = AI_play(white_player_turn());
                     if (AI_move == nullptr) { // No move to play for AI;
                         std::cout << "- Black has no move to play! White wins!" << std::endl;
@@ -435,19 +435,19 @@ void Chess::run() {
     }
 }
 
-int Chess::get_turn() {
+int Chess::get_turn() const {
     return turn_number_;
 }
 
-bool Chess::white_player_turn() {
+bool Chess::white_player_turn() const {
     return (turn_number_ % 2) == 1; 
 }
 
-bool Chess::black_player_turn() {
+bool Chess::black_player_turn() const {
     return (turn_number_ % 2) == 0; 
 }
 
-void Chess::print_board() {
+void Chess::print_board() const {
     if (white_player_turn()) {
         if (play_against_Human_ || play_against_Black_) {
             std::cout << " ================" << std::endl;

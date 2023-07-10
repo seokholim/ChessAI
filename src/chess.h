@@ -36,11 +36,11 @@ public:
 
     void run();
 
-    int get_turn();
-    bool white_player_turn();
-    bool black_player_turn();
+    int get_turn() const;
+    bool white_player_turn() const;
+    bool black_player_turn() const;
 
-    void print_board();
+    void print_board() const;
 
 private:
     Player white_player_, black_player_;
