@@ -1,6 +1,6 @@
 # Chess
 
-A chess game CLI and engine AI made from scratch. Everything was handmade in c++17 standard, so you can download and play against my AI on your terminal.
+A chess game CLI and engine AI made from scratch. Everything was handmade in c++17 standard.
 
 ## Video Demonstration (AI vs AI; until Turn 30)
 https://github.com/seokholim/Chess/assets/59181749/c125598d-ed37-4d02-a1c8-396e0e731267
