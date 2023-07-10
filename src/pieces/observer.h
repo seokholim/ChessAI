@@ -4,7 +4,7 @@
 class Subject;
 
 class Observer {
-  public:
+public:
     virtual void update() = 0;
 };
 
