@@ -6,10 +6,6 @@
 class ChessPiece;
 
 class Cell {
-    char column;
-    int row;
-    std::shared_ptr<ChessPiece> piece;
-
 public:
     Cell();
     Cell(char column, int row);
@@ -20,7 +16,10 @@ public:
     void set_piece(const std::shared_ptr<ChessPiece>& piece);
     void remove_piece();
     void delete_piece();
-
+private:
+    char column;
+    int row;
+    std::shared_ptr<ChessPiece> piece;
 };
 
 #endif
