@@ -92,4 +92,29 @@ const int king_capturing_bishop = 5;
 const int king_capturing_queen = 10;
 const int king_capturing_king = 5;
 
+const int capturing_for_free = 1000;
+const int checkmate = 10000;
+
+const int pawn_neutral = 5;
+const int rook_neutral = 3;
+const int knight_neutral = 3;
+const int bishop_neutral = 3;
+const int queen_neutral = 3;
+const int king_neutral = -10;
+
+const int pawn_safe_neutral = 6;
+const int rook_safe_neutral = 4;
+const int knight_safe_neutral = 4;
+const int bishop_safe_neutral = 4;
+const int queen_safe_neutral = 4;
+const int king_safe_neutral = -10;
+
+const int defensive_move = 30;
+
+const int castling = 200;
+const int pawn_upgrade = 100;
+const int pawn_enPassant = 20;
+
+const int dangerous_move = -50;
+
 #endif

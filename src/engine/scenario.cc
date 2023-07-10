@@ -26,16 +26,15 @@ std::shared_ptr<Piece> Scenario::copy_piece(std::shared_ptr<Piece> piece) {
     return copy_data;
 }
 
-void Scenario::set_move_type(std::shared_ptr<Move> move) { // TODO
+void Scenario::set_move_type(std::shared_ptr<Move> move) {
     if (move == nullptr || move->moving_piece() == nullptr || move->move_type() != MoveType::Unevaluated) {
         return;
     }
-
     if (move->occupied()) {
         if (move->moving_piece()->colour() == move->occupying_piece()->colour()) {
             if ((move->moving_piece()->type() == PieceType::Rook && move->occupying_piece()->type() == PieceType::King) 
-            ||  (move->moving_piece()->type() == PieceType::King && move->occupying_piece()->type() == PieceType::Rook)) { // Castling
-                move->move_type(MoveType::Castling);
+            ||  (move->moving_piece()->type() == PieceType::King && move->occupying_piece()->type() == PieceType::Rook)) { // TODO: Castling
+                // move->move_type(MoveType::Castling);
             } else { // Defending
                 move->move_type(MoveType::Defending);
             }
@@ -47,7 +46,7 @@ void Scenario::set_move_type(std::shared_ptr<Move> move) { // TODO
     }
 }
 
-void Scenario::evaluate_move_type(std::shared_ptr<Move> move) { // TODO
+void Scenario::evaluate_move_type(std::shared_ptr<Move> move) {
     if (move->move_type() == MoveType::Unevaluated || move->move_type() == MoveType::Null) {
         return;
     } else if (move->move_type() == MoveType::Capturing) {
@@ -125,7 +124,6 @@ void Scenario::evaluate_move_type(std::shared_ptr<Move> move) { // TODO
         } else if (move->moving_piece()->type() == PieceType::Queen && move->occupying_piece()->type() == PieceType::King) {
             move->value(queen_capturing_king);
         }
-
         // moving piece is King
         if (move->moving_piece()->type() == PieceType::King && move->occupying_piece()->type() == PieceType::Pawn) {
             move->value(king_capturing_pawn);
@@ -141,39 +139,48 @@ void Scenario::evaluate_move_type(std::shared_ptr<Move> move) { // TODO
             move->value(king_capturing_king);
         } 
     } else if (move->move_type() == MoveType::CapturingForFree) {
-        move->value(1000);
+        move->value(capturing_for_free);
     } else if (move->move_type() == MoveType::SafeNeutral) {
         if (move->moving_piece()->type() == PieceType::Pawn) {
-            move->value(7);
+            move->value(pawn_safe_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Rook) {
+            move->value(rook_safe_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Knight) {
+            move->value(knight_safe_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Bishop) {
+            move->value(bishop_safe_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Queen) {
+            move->value(queen_safe_neutral);
         } else if (move->moving_piece()->type() == PieceType::King) {
-            move->value(-10);
-        } else {
-            move->value(5);
+            move->value(king_safe_neutral);
         }
-    } else if (move->move_type() == MoveType::Dangerous) {
-        move->value(-50);
-    } else if (move->move_type() == MoveType::Defending) {
-        move->value(50);
-    } else if (move->move_type() == MoveType::Evading) {
-        move->value(30);
     } else if (move->move_type() == MoveType::Neutral) {
         if (move->moving_piece()->type() == PieceType::Pawn) {
-            move->value(5);
+            move->value(pawn_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Rook) {
+            move->value(rook_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Knight) {
+            move->value(knight_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Bishop) {
+            move->value(bishop_neutral);
+        } else if (move->moving_piece()->type() == PieceType::Queen) {
+            move->value(queen_neutral);
         } else if (move->moving_piece()->type() == PieceType::King) {
-            move->value(-10);
-        } else {
-            move->value(3);
+            move->value(king_neutral);
         }
+    } else if (move->move_type() == MoveType::Defending) {
+        move->value(defensive_move);
+    } else if (move->move_type() == MoveType::Dangerous) {
+        move->value(dangerous_move);
     } else if (move->move_type() == MoveType::Castling) {
-        move->value(200);
+        move->value(castling);
     } else if (move->move_type() == MoveType::EnPassant) {
-        move->value(30);
+        move->value(pawn_enPassant);
     } else if (move->move_type() == MoveType::Upgrade) {
-        move->value(100);
+        move->value(pawn_upgrade);
     } else if (move->move_type() == MoveType::Checkmate) {
-        move->value(10000);
+        move->value(checkmate);
     }
-
 }
 
 Scenario::Scenario() : m_original_move{nullptr}, m_scenario_level{0}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_scenario_colour{PlayerColour::Null}, m_number_of_next_scenarios{0}, m_scenario_value{0} {}
