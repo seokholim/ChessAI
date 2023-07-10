@@ -99,10 +99,9 @@ bool valid_direction(Direction direction) {
     return false;
 }
 
-bool valid_chess_move_type(MoveType move_type) {
+bool valid_chess_move_type(MoveType move_type) { // TODO: Castling, Upgrade, EnPassant
     if (move_type == MoveType::Capturing || move_type == MoveType::Evading || move_type == MoveType::Neutral
-    ||  move_type == MoveType::Castling || move_type == MoveType::EnPassant || move_type == MoveType::Upgrade
-    ||  move_type == MoveType::Dangerous || move_type == MoveType::CapturingForFree || move_type == MoveType::SafeNeutral 
+    || move_type == MoveType::Dangerous || move_type == MoveType::CapturingForFree || move_type == MoveType::SafeNeutral 
     || move_type == MoveType::Checkmate) {
         return true;
     }
