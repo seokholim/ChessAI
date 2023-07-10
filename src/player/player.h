@@ -22,11 +22,10 @@ public:
   
     void clear_moves();
     void generate_moves();
-    void remove_best_move();
-    std::shared_ptr<Move> get_best_move();
+    std::shared_ptr<Move> get_best_move() const;
 
     void AI(bool AI);
-    bool AI();
+    bool AI() const;
 private:
     std::string name_;
     const PlayerColour colour_;

@@ -62,14 +62,7 @@ void Player::generate_moves() {
     }
 }
 
-// void Player::remove_best_move() {
-//     if (moves_.empty()) {
-//         return;
-//     }
-//     moves_.pop();
-// }
-
-std::shared_ptr<Move> Player::get_best_move() {
+std::shared_ptr<Move> Player::get_best_move() const {
     if (moves_t1_.empty()) {
         if (moves_t2_.empty()) {
             return nullptr;
@@ -83,6 +76,6 @@ void Player::AI(bool AI) {
     AI_ = AI;
 }
 
-bool Player::AI() {
+bool Player::AI() const {
     return AI_;
 }
