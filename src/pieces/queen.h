@@ -3,7 +3,6 @@
 #include "piece.h"
 
 class Queen : public Piece {
-
 public:
     Queen(PlayerColour colour);
     void generate_candidate_positions() override;
