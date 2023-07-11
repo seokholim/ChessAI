@@ -3,7 +3,8 @@
 A chess game CLI and engine AI made from scratch. Everything was handmade in c++17 standard.
 
 ## Video Demonstration (AI vs AI; until Turn 30)
-https://github.com/seokholim/Chess/assets/59181749/c125598d-ed37-4d02-a1c8-396e0e731267
+https://github.com/seokholim/ChessAI/assets/59181749/00299020-8f3e-44c6-a15b-929a40de1d44
+
 
 ## Overview
 
