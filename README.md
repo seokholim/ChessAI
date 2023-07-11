@@ -1,4 +1,4 @@
-# Chess
+# ChessAI
 
 A chess game CLI and engine AI made from scratch. Everything was handmade in c++17 standard.
 
