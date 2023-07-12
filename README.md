@@ -5,6 +5,10 @@ A chess game CLI and engine AI made from scratch. Everything was handmade in c++
 ## Video Demonstration (AI vs AI; until Turn 30)
 https://github.com/seokholim/ChessAI/assets/59181749/00299020-8f3e-44c6-a15b-929a40de1d44
 
+## Video Demonstration (Human vs AI; until Turn 11)
+https://github.com/seokholim/chess/assets/59181749/92077b27-9ee6-418e-849f-58554d3ba8fa
+
+
 
 ## Overview
 
