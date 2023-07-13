@@ -7,7 +7,7 @@ Engine::Engine() {}
 Engine::~Engine() {}
 
 void Engine::run_scenario(std::shared_ptr<Move>& move, int level) {
-    if (move == nullptr || move->moving_piece() == nullptr) { // TODO: check valid move
+    if (move == nullptr || move->moving_piece() == nullptr) {
         return;
     }
 
@@ -27,15 +27,15 @@ void Engine::run_scenario(std::shared_ptr<Move>& move, int level) {
 }
 
 void Engine::evaluate_move(std::shared_ptr<Move>& move, int level) {
-    if (move == nullptr || move->moving_piece() == nullptr) { // TODO: check valid move
+    if (move == nullptr || move->moving_piece() == nullptr) {
         std::cout << "Engine::evaluate_move(...); nullptr" << std::endl;
         return;
     }
 
-    // if not a Defending move, run scenario TODO: include castling
+    // if not a Defending move, run scenario
     if (!move->occupied() || move->moving_piece()->colour() != move->occupying_piece()->colour()) {
         run_scenario(move, level);
-    } // TODO
+    }
 }
 
 void Engine::generate_moves_for_piece(std::shared_ptr<ChessPiece>& piece, bool use_engine) {
@@ -43,7 +43,7 @@ void Engine::generate_moves_for_piece(std::shared_ptr<ChessPiece>& piece, bool u
         std::cout<< "Engine::evaluate_moves_for(...); piece is nullptr" << std::endl;
         return;
     }
-    int engine_level = 2;
+    int engine_level = 3;
     if (!use_engine) {
         engine_level = 0;
     }
@@ -63,18 +63,6 @@ void Engine::generate_moves_for_piece(std::shared_ptr<ChessPiece>& piece, bool u
         candidate_moves.push_back(candidate_move);
         candidate_positions.pop();
     }
-
-    // single thread
-    // for (auto& move : candidate_moves) {
-    //     evaluate_move(move, engine_level);
-    //     if (valid_chess_move_type(move->move_type())) {
-    //         if (is_move_t1(move->move_type())) {
-    //             piece_data->add_move_t1(move);
-    //         } else {
-    //             piece_data->add_move_t2(move);
-    //         }
-    //     }
-    // }
 
     // multithreading
     std::thread threads[candidate_moves.size()];
@@ -96,11 +84,6 @@ void Engine::generate_moves_for_piece(std::shared_ptr<ChessPiece>& piece, bool u
 }
 
 void Engine::generate_moves_for_pieces(std::vector<std::shared_ptr<ChessPiece>> pieces, bool use_engine) {
-    // single thread
-    // for (auto& piece : pieces) {
-    //     generate_moves_for_piece(piece, use_engine);
-    // }
-
     // multithreading
     std::thread threads[pieces.size()];
     for (int i = 0; i < pieces.size(); ++i) {
