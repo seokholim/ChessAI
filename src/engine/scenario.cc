@@ -38,10 +38,10 @@ void Scenario::set_move_type(std::shared_ptr<Move> move) {
             } else { // Defending
                 move->move_type(MoveType::Defending);
             }
-        } else { // Capturing or EnPassant
+        } else { // Capturing or TODO: EnPassant
             move->move_type(MoveType::Capturing);
         }
-    } else { // moving to empty spot or Evading or Upgrade
+    } else { // moving to empty spot or pawn Upgrade
         move->move_type(MoveType::Neutral);
     }
 }
@@ -186,7 +186,6 @@ void Scenario::evaluate_move_type(std::shared_ptr<Move> move) {
 Scenario::Scenario() : m_original_move{nullptr}, m_scenario_level{0}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_scenario_colour{PlayerColour::Null}, m_number_of_next_scenarios{0}, m_scenario_value{0} {}
 
 Scenario::Scenario(std::shared_ptr<Move> move, int level) : m_original_move{move}, m_scenario_level{level}, m_move_copy{nullptr}, m_new_board{}, m_pieces_data_copy{}, m_scenario_colour{PlayerColour::Null}, m_number_of_next_scenarios{0}, m_scenario_value{0} {
-    // TODO: check valid move
     m_scenario_colour = m_original_move->moving_piece()->colour();
 
     std::shared_ptr<ChessBoard> new_chess_board = std::make_shared<ChessBoard>(&m_new_board);
@@ -226,7 +225,7 @@ Scenario::~Scenario() {
 }
 
 void Scenario::move() {
-    if (m_move_copy == nullptr) { // TODO: check valid m_move_copy
+    if (m_move_copy == nullptr) {
         std::cout << "Scenario::move(); m_move_copy is nullptr" << std::endl;
         return;
     }
@@ -287,7 +286,7 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
     for (auto piece: m_pieces_data_copy) {
         if (piece->colour() != m_scenario_colour) { // consider opponent pieces' candidate positions
             std::queue<Position> candidate_positions = piece->candidate_positions();
-            std::vector<std::shared_ptr<Move>> candidate_moves; // TODO: multithreading
+            std::vector<std::shared_ptr<Move>> candidate_moves;
             std::shared_ptr<Move> candidate_move;
             while (!candidate_positions.empty()) {
                 Position candidate_position = candidate_positions.front();
@@ -383,10 +382,11 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
     }
 
     // TODO: improve
+    // first set the default move type, and then change the move type depending on how many supports/opponent_attacks there are
     set_move_type(m_original_move);
     evaluate_move_type(m_original_move);
     if (support == 0) {
-        if (opponent_attack == 0) { // OK
+        if (opponent_attack == 0) {
             if (m_original_move->move_type() != MoveType::Checkmate) {
                 if (m_original_move->move_type() == MoveType::Capturing) {
                     m_original_move->move_type(MoveType::CapturingForFree);
@@ -397,7 +397,7 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
                     evaluate_move_type(m_original_move);
                 }
             }
-        } else { // Possibly not ok
+        } else {
             if (critical_opponent_attack == 0) {
                 if (m_original_move->move_type() == MoveType::Capturing) {
                     evaluate_move_type(m_original_move);
@@ -427,7 +427,7 @@ void Scenario::generate_next_scenarios() { // dependent on Scenario::move() beca
                     evaluate_move_type(m_original_move);
                 }
             }
-        } else if (support < opponent_attack) { // BAD
+        } else if (support < opponent_attack) {
             if (critical_opponent_attack == 0) {
                 if (m_original_move->move_type() == MoveType::Capturing) {
                     evaluate_move_type(m_original_move);
