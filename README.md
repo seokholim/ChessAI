@@ -28,7 +28,7 @@ To explain how moves are evaluated when reaching the end of a scenario tree, con
 
 Moves that are not at the end of a scenario tree are evaluated by averaging out the next scenarios, and subtracting it from the move's base value.     
 
-For example, consider that White Player has a move from a2 to a3. Supposing the move was made, it has next scenarios that can be played out by Black Player's moves. If the recursion level is 1, then Black Player's moves are "leaf" moves, and they are evaluated with base values; a pawn capturing a bishop is more advantageous than a bishop capturing a pawn. Then, the averaged value of the next scenarios is subtracted from the original White Player move's base value. 
+For example, consider that White Player has a move from **a2** to **a3**. Supposing the move was made, it has next scenarios that can be played out by Black Player's moves. If the recursion level is 1, then Black Player's moves are "leaf" moves, and they are evaluated with base values; a pawn capturing a bishop is more advantageous than a bishop capturing a pawn. Then, the averaged value of the next scenarios is subtracted from the original White Player move's base value. 
 
 The reasoning of subtraction is that Black Player's good moves are bad moves for White player. Moreover, so far, the AI played more optimally when it averaged out all the scenarios, instead of assuming that the opponent will play the best move. I am still experimenting on this.   
 
