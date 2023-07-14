@@ -1,6 +1,7 @@
 # ChessAI
 
 A chess game CLI and chess AI made from scratch. Everything was handmade in c++17 standard.
+Please check out why I worked on this project below!
 
 ## Video Demonstration (AI vs AI; until Turn 30)
 https://github.com/seokholim/ChessAI/assets/59181749/00299020-8f3e-44c6-a15b-929a40de1d44
