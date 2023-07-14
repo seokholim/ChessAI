@@ -15,21 +15,24 @@ https://github.com/seokholim/chess/assets/59181749/92077b27-9ee6-418e-849f-58554
 I wanted to design and create an AI that can make intellectual decisions.        
 So, after making a chess game in OOP with design patterns, I created an AI with the following reasoning:  
 
-For each move, AI should consider the next scenarios that can be played out by an opponent after making the move. For example, if AI has a move from **a2** to **a3**, AI supposes that it made such move, and then considers the next moves that the opponent can play. If the opponent happens to have a move that can capture the AI's piece on **a3**, then the move from **a2** to **a3** is potentially dangerous, or strategic, depending on whether or not AI has a different move that can go to **a3**. So, again, AI supposes that the opponent made a capturing move to **a3**, and then sees if AI has moves that can capture the opponent's piece on **a3** in turn. If AI has no such move, then the original move from **a2** to **a3** was probably dangerous. Otherwise, the original move can be strategic. If the recursion level is 2, AI stops considering the next depth of scenarios, and by considering this scenario tree, it sets the value of the original move from **a2** to **a3**. The evaluation logic is explained in the next section.
+For each move, AI should consider the next scenarios that can be played out by an opponent after making the move. For example, if AI has a move from **a2** to **a3**, AI supposes that it made such move, and then considers the next moves that the opponent can play. If the opponent happens to have a move that can capture the AI's piece on **a3**, then the move from **a2** to **a3** is potentially dangerous, or strategic, depending on whether or not AI has a different move that can go to **a3**. So, recursivly, AI supposes that the opponent made a capturing move to **a3**, and then sees if AI has moves that can capture the opponent's piece on **a3** in turn. If AI has no such move, then the original move from **a2** to **a3** was probably dangerous. Otherwise, the original move can be strategic. If the recursion level is 2, AI stops considering the next depth of scenarios, and by considering this scenario tree, it sets the value of the original move from **a2** to **a3**. The evaluation logic is explained in the next section.   
 
 The result is surprising. Moves that are made by AI look intellectual; please check out the demo videos above.  
 
 NOTE: One of the rule of Chess is that one can't make a move that will put their King in check. Therefore, by implementing this recursive scenarios, one can make sure that each move is valid by checking if opponent has no move that can capture their King in the next scenario.    
 
 ## How Moves are Evaluated
-In recursion, there must be a base case.    
-In other words, in Chess, one can't always consider the next scenarios.       
-That's why I have a simple way to evaluate a base value of a move at the end of the recursive scenarios.   
-A pawn capturing a bishop, should be more advantageous than a bishop capturing a pawn. Of course, this is not always the case; but as a base case, it is a sufficient assumption. Therefore, at the end of the scenario tree, "leaf" moves are evaluated simply by what kind of moves they are; for example, if they are capturing moves, their values are X, and X can vary depending on what kind of a capture it is; if they are neutral moves with no capture, their values are Y, and Y can vary depending on what kind of a neutral move it is.    
+In recursion, there must be a base case. In other words, in Chess, one can't always consider the next scenarios.       
 
-Moves that are not at the base case scenario are evaluated by averaging out the next scenarios, and subtracting it from the move's base value.     
+To explain how moves are evaluated when reaching the end of a scenario tree, consider the following: a pawn capturing a bishop, should be more advantageous than a bishop capturing a pawn. Of course, this is not always the case; but as a base case, it is a sufficient assumption. Therefore, at the end of the scenario tree, "leaf" moves are evaluated simply by what kind of moves they are; for example, if they are capturing moves, their values are X, and X can vary depending on what kind of a capture it is; if they are neutral moves with no capture, their values are Y, and Y can vary depending on what kind of a neutral move it is.    
 
-Example: consider that White Player has a move from a2 to a3. Supposing the move was made, it has next scenarios that can be played out by Black Player's moves. If the recursion level is 1, then Black Player's moves are "leaf" moves, and they are evaluated with base values; a pawn capturing a bishop is more advantageous than a bishop capturing a pawn. Then, the averaged value is subtracted from the original White Player move's base value. The reasoning of subtraction is that Black Player's good moves are bad moves for White player. If the recursion level is 2, then Black Player's move are not "leaf" moves, so they could again create the next scenarios which are White Player's "leaf" moves.   s
+Moves that are not at the end of a scenario tree are evaluated by averaging out the next scenarios, and subtracting it from the move's base value.     
+
+For example, consider that White Player has a move from a2 to a3. Supposing the move was made, it has next scenarios that can be played out by Black Player's moves. If the recursion level is 1, then Black Player's moves are "leaf" moves, and they are evaluated with base values; a pawn capturing a bishop is more advantageous than a bishop capturing a pawn. Then, the averaged value of the next scenarios is subtracted from the original White Player move's base value. 
+
+The reasoning of subtraction is that Black Player's good moves are bad moves for White player. Moreover, so far, the AI played more optimally when it averaged out all the scenarios, instead of assuming that the opponent will play the best move. I am still experimenting on this.   
+
+If the recursion level is 2, then Black Player's move are not "leaf" moves, so they could again create the next scenarios which are White Player's "leaf" moves.   
 
 ## Technical Overview of the Design
 
