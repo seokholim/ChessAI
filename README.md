@@ -9,7 +9,7 @@ https://github.com/seokholim/ChessAI/assets/59181749/00299020-8f3e-44c6-a15b-929
 ## Video Demonstration (Human vs AI; until Turn 11)
 https://github.com/seokholim/chess/assets/59181749/92077b27-9ee6-418e-849f-58554d3ba8fa
 
-## Purpose of this Project
+## Purpose of This Project
 I wanted to design and create an AI that can make intellectual decisions.        
 After making a chess game in OOP with design patterns, I created an AI with the following reasoning:  
 
@@ -21,7 +21,7 @@ The result is surprising. Moves that are made by AI look intellectual; please ch
 
 NOTE: One of the rule of Chess is that one can't make a move that will put their King in check. Therefore, by implementing this recursive scenarios, one can make sure that each move is valid by checking if opponent has no move that can capture their King in the next scenario.    
 
-## How Moves are Evaluated
+## How Moves Are Evaluated
 In recursion, there must be a base case. In other words, in Chess, one can't always consider the next scenarios.       
 
 To explain how moves are evaluated when reaching the end of a scenario tree, consider the following: a pawn capturing a bishop, should be more advantageous than a bishop capturing a pawn. Of course, this is not always the case; but as a base case, it is a sufficient assumption. Therefore, at the end of the scenario tree, "leaf" moves are evaluated simply by what kind of moves they are; for example, if they are capturing moves, their values are X, and X can vary depending on what kind of a capture it is; if they are neutral moves with no capture, their values are Y, and Y can vary depending on what kind of a neutral move it is.    
