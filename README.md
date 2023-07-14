@@ -1,15 +1,7 @@
 # ChessAI
 
 A chess game CLI and chess AI made from scratch. Everything was handmade in c++17 standard.    
-
 Please check out why I worked on this project below the demo videos!
-
-## Video Demonstration (AI vs AI; until Turn 30)
-https://github.com/seokholim/ChessAI/assets/59181749/00299020-8f3e-44c6-a15b-929a40de1d44
-
-## Video Demonstration (Human vs AI; until Turn 11)
-https://github.com/seokholim/chess/assets/59181749/92077b27-9ee6-418e-849f-58554d3ba8fa
-
 
 ## Purpose of this Project
 I wanted to design and create an AI that can make intellectual decisions.        
@@ -19,9 +11,15 @@ For each move, AI should consider the next scenarios that can be played out by a
 
 If the recursion level is 2, AI stops considering the next depth of scenarios, and by considering this scenario tree, it sets the value of the original move from **a2** to **a3**. The evaluation logic is explained in the next section.   
 
-The result is surprising. Moves that are made by AI look intellectual; please check out the demo videos above.  
+The result is surprising. Moves that are made by AI look intellectual; please check out the demo videos below.  
 
 NOTE: One of the rule of Chess is that one can't make a move that will put their King in check. Therefore, by implementing this recursive scenarios, one can make sure that each move is valid by checking if opponent has no move that can capture their King in the next scenario.    
+
+## Video Demonstration (AI vs AI; until Turn 30)
+https://github.com/seokholim/ChessAI/assets/59181749/00299020-8f3e-44c6-a15b-929a40de1d44
+
+## Video Demonstration (Human vs AI; until Turn 11)
+https://github.com/seokholim/chess/assets/59181749/92077b27-9ee6-418e-849f-58554d3ba8fa
 
 ## How Moves are Evaluated
 In recursion, there must be a base case. In other words, in Chess, one can't always consider the next scenarios.       
